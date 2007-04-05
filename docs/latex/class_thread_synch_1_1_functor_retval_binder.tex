@@ -1,0 +1,105 @@
+\section{Thread\-Synch::Functor\-Retval\-Binder$<$ T $>$ Class Template Reference}
+\label{class_thread_synch_1_1_functor_retval_binder}\index{ThreadSynch::FunctorRetvalBinder@{ThreadSynch::FunctorRetvalBinder}}
+A helper functor and return value class. A helper class which stores the call functor, and attempts to grab the return value after a successful call. \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} cannot be templated without major pain in the rest of the code, so this templated type does the work.  
+
+
+{\tt \#include $<$Functor\-Retval\-Binder.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Functor\-Retval\-Binder} (boost::function$<$ T()$>$ functor, BYTE $\ast$p\-Return\-Value\-Buffer)
+\item 
+{\bf Functor\-Retval\-Binder} (boost::function$<$ void()$>$ functor)
+\item 
+{\bf $\sim$Functor\-Retval\-Binder} ()
+\item 
+void {\bf execute} ()
+\begin{CompactList}\small\item\em executes the callback. \begin{Desc}
+\item[Remarks:]This function has one variation for T which are non-void, in which case the return value is saved at the address passed to the constructor. For T which is void, the return value is obviously not stored -- or rather, there is no return value. \end{Desc}
+\item\end{CompactList}\item 
+void {\bf free} ()
+\begin{CompactList}\small\item\em releases any resources currently held by an \doxyref{Functor\-Retval\-Binder}{p.}{class_thread_synch_1_1_functor_retval_binder} instance, and deletes the instance itself. \item\end{CompactList}\item 
+template$<$$>$ {\bf $\sim$Functor\-Retval\-Binder} ()
+\item 
+template$<$$>$ void {\bf execute} ()
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+boost::function$<$ T(void)$>$ {\bf m\_\-functor}
+\item 
+BYTE $\ast$ {\bf m\_\-p\-Return\-Value\-Buffer}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$ class Thread\-Synch::Functor\-Retval\-Binder$<$ T $>$}
+
+A helper functor and return value class. A helper class which stores the call functor, and attempts to grab the return value after a successful call. \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} cannot be templated without major pain in the rest of the code, so this templated type does the work. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!FunctorRetvalBinder@{FunctorRetvalBinder}}
+\index{FunctorRetvalBinder@{FunctorRetvalBinder}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ T $>$::{\bf Functor\-Retval\-Binder} (boost::function$<$ T()$>$ {\em functor}, BYTE $\ast$ {\em p\-Return\-Value\-Buffer})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_functor_retval_binder_326fc1db141fd6e48cbda43416fa27cb}
+
+
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!FunctorRetvalBinder@{FunctorRetvalBinder}}
+\index{FunctorRetvalBinder@{FunctorRetvalBinder}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ T $>$::{\bf Functor\-Retval\-Binder} (boost::function$<$ void()$>$ {\em functor})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_functor_retval_binder_0f4dd4fa7e8b0ecf24a0e40b7c8ae77c}
+
+
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!~FunctorRetvalBinder@{$\sim$FunctorRetvalBinder}}
+\index{~FunctorRetvalBinder@{$\sim$FunctorRetvalBinder}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ T $>$::$\sim${\bf Functor\-Retval\-Binder} ()}\label{class_thread_synch_1_1_functor_retval_binder_fba706ba0110a7029f474587ef2281d4}
+
+
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!~FunctorRetvalBinder@{$\sim$FunctorRetvalBinder}}
+\index{~FunctorRetvalBinder@{$\sim$FunctorRetvalBinder}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ void $>$::$\sim${\bf Functor\-Retval\-Binder} ()}\label{class_thread_synch_1_1_functor_retval_binder_3790fa4f068ef26ad4dbbad54bf3ad55}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!execute@{execute}}
+\index{execute@{execute}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ T $>$::execute ()\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_functor_retval_binder_67c8d4881051b8a8e014383d97018b7b}
+
+
+executes the callback. \begin{Desc}
+\item[Remarks:]This function has one variation for T which are non-void, in which case the return value is saved at the address passed to the constructor. For T which is void, the return value is obviously not stored -- or rather, there is no return value. \end{Desc}
+
+
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!free@{free}}
+\index{free@{free}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ T $>$::free ()\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_functor_retval_binder_c91156994eab285f656173e7002ed16c}
+
+
+releases any resources currently held by an \doxyref{Functor\-Retval\-Binder}{p.}{class_thread_synch_1_1_functor_retval_binder} instance, and deletes the instance itself. 
+
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!execute@{execute}}
+\index{execute@{execute}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$$>$ void {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ void $>$::execute ()}\label{class_thread_synch_1_1_functor_retval_binder_af07b1c5cafc7b8f45030b92f336b15a}
+
+
+
+
+\subsection{Member Data Documentation}
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!m_functor@{m\_\-functor}}
+\index{m_functor@{m\_\-functor}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ boost::function$<$T(void)$>$ {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ T $>$::{\bf m\_\-functor}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_functor_retval_binder_9d0c9a504580315eca7a0b4aa087e9fa}
+
+
+\index{ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}!m_pReturnValueBuffer@{m\_\-pReturnValueBuffer}}
+\index{m_pReturnValueBuffer@{m\_\-pReturnValueBuffer}!ThreadSynch::FunctorRetvalBinder@{Thread\-Synch::Functor\-Retval\-Binder}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ BYTE$\ast$ {\bf Thread\-Synch::Functor\-Retval\-Binder}$<$ T $>$::{\bf m\_\-p\-Return\-Value\-Buffer}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_functor_retval_binder_b22edfc6dba84caabbc14cd0fe41f219}
+
+
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Functor\-Retval\-Binder.h}\end{CompactItemize}

@@ -1,0 +1,294 @@
+\section{Thread\-Synch::Call\-Scheduler$<$ Pickup\-Policy $>$ Class Template Reference}
+\label{class_thread_synch_1_1_call_scheduler}\index{ThreadSynch::CallScheduler@{ThreadSynch::CallScheduler}}
+A singleton class which enables a user to schedule calls across threads The Pickup\-Policy template parameter will decide how notifications are transported between the threads. \begin{Desc}
+\item[Remarks:]Todo:\begin{itemize}
+\item Possible tune-up: Keep one lock per queue, in addition to one for all queues. The call structure may become slow in case of many simultaneous and quick routines being called cross threads, in which case the queue mutex will lock and unlock quite rapidly.\end{itemize}
+\end{Desc}
+\begin{itemize}
+\item Deal with TLS return values and parameters, if possible. \end{itemize}
+ 
+
+
+{\tt \#include $<$Call\-Scheduler.h$>$}
+
+Collaboration diagram for Thread\-Synch::Call\-Scheduler$<$ Pickup\-Policy $>$:\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+template$<$typename Return\-Value\-Type, class Exceptions$>$ Return\-Value\-Type {\bf sync\-Call} (DWORD dw\-Thread\-Id, boost::function$<$ Return\-Value\-Type()$>$ callback, DWORD dw\-Timeout)
+\begin{CompactList}\small\item\em The function which schedules calls to be made across threads, and expects a few exceptions might be thrown. \item\end{CompactList}\item 
+template$<$typename Return\-Value\-Type$>$ Return\-Value\-Type {\bf sync\-Call} (DWORD dw\-Thread\-Id, boost::function$<$ Return\-Value\-Type()$>$ callback, DWORD dw\-Timeout)
+\begin{CompactList}\small\item\em The function which schedules calls to be made across threads. \item\end{CompactList}\item 
+template$<$class Exceptions$>$ void {\bf sync\-Call} (DWORD dw\-Thread\-Id, boost::function$<$ void()$>$ callback, DWORD dw\-Timeout)
+\begin{CompactList}\small\item\em The function which schedules calls to be made across threads, and expects a few exceptions might be thrown. \item\end{CompactList}\item 
+void {\bf sync\-Call} (DWORD dw\-Thread\-Id, boost::function$<$ void()$>$ callback, DWORD dw\-Timeout)
+\begin{CompactList}\small\item\em The function which schedules calls to be made across threads. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{CompactItemize}
+\item 
+static {\bf Call\-Scheduler} $\ast$ {\bf get\-Instance} ()
+\item 
+static void APIENTRY {\bf execute\-Scheduled\-Calls} ({\bf Call\-Scheduler} $\ast$p\-Scheduler\-Instance)
+\begin{CompactList}\small\item\em Exceutes all scheuled calls for the current thread. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Private Types}
+\begin{CompactItemize}
+\item 
+typedef std::list$<$ {\bf Call\-Handler} $\ast$ $>$ {\bf CALLQUEUE}
+\item 
+typedef std::map$<$ DWORD, {\bf CALLQUEUE} $>$ {\bf THREADCALLQUEUE}
+\end{CompactItemize}
+\subsection*{Private Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Call\-Scheduler} ()
+\begin{CompactList}\small\item\em Constructor. \item\end{CompactList}\item 
+void {\bf execute\-Call\-Handler} (DWORD dw\-Thread\-Id, {\bf Call\-Handler} $\ast$p\-Call\-Handler, DWORD dw\-Timeout)
+\begin{CompactList}\small\item\em Internal helper function shared between the different sync\-Call flavors. \item\end{CompactList}\item 
+{\bf Call\-Scheduler} (const {\bf Call\-Scheduler} \&)
+\begin{CompactList}\small\item\em Copy constructor. \item\end{CompactList}\item 
+const {\bf Call\-Scheduler} \& {\bf operator=} (const {\bf Call\-Scheduler} \&)
+\begin{CompactList}\small\item\em Assignment operator. \item\end{CompactList}\item 
+void {\bf enqueue\-Thread\-Call} (DWORD dw\-Thread\-Id, {\bf Call\-Handler} $\ast$p\-Callback)
+\begin{CompactList}\small\item\em adds a call to the specified therad's queue. \item\end{CompactList}\item 
+void {\bf dequeue\-Thread\-Call} (DWORD dw\-Thread\-Id, {\bf Call\-Handler} $\ast$p\-Callback)
+\begin{CompactList}\small\item\em removes a call off a thread's queue. \item\end{CompactList}\item 
+{\bf Call\-Handler} $\ast$ {\bf get\-Next\-Call\-From\-Queue} (DWORD dw\-Thread\-Id, boost::shared\_\-ptr$<$ boost::try\_\-mutex::scoped\_\-try\_\-lock $>$ p\-Call\-Handler\-Lock)
+\begin{CompactList}\small\item\em Function to fetch the next \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} off the specified queue. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{CompactItemize}
+\item 
+static void {\bf on\-Rethrown\-Exception\-Destroyed} (boost::shared\_\-ptr$<$ {\bf Call\-Handler} $>$ p\-Call\-Handler)
+\begin{CompactList}\small\item\em Callback for Call\-Handler's rethrow mechanism \begin{Desc}
+\item[Remarks:]Will be called by the throw\-Hooked wrapper when a re-thrown exception has been destroyed. The shared\_\-ptr will take care of deleting the \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} pointer. \end{Desc}
+\item\end{CompactList}\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+boost::mutex {\bf m\_\-thread\-Queue\-Mutex}
+\item 
+{\bf THREADCALLQUEUE} {\bf m\_\-thread\-Queue}
+\end{CompactItemize}
+\subsection*{Static Private Attributes}
+\begin{CompactItemize}
+\item 
+static {\bf Call\-Scheduler} $\ast$ {\bf m\_\-p\-Instance}
+\item 
+static boost::mutex {\bf m\_\-instance\-Mutex}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class Pickup\-Policy$>$ class Thread\-Synch::Call\-Scheduler$<$ Pickup\-Policy $>$}
+
+A singleton class which enables a user to schedule calls across threads The Pickup\-Policy template parameter will decide how notifications are transported between the threads. \begin{Desc}
+\item[Remarks:]Todo:\begin{itemize}
+\item Possible tune-up: Keep one lock per queue, in addition to one for all queues. The call structure may become slow in case of many simultaneous and quick routines being called cross threads, in which case the queue mutex will lock and unlock quite rapidly.\end{itemize}
+\end{Desc}
+\begin{itemize}
+\item Deal with TLS return values and parameters, if possible. \end{itemize}
+
+
+
+
+\subsection{Member Typedef Documentation}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!CALLQUEUE@{CALLQUEUE}}
+\index{CALLQUEUE@{CALLQUEUE}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ typedef std::list$<${\bf Call\-Handler}$\ast$$>$ {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::{\bf CALLQUEUE}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_cbf554f428fb30b6dff3c19449d807f3}
+
+
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!THREADCALLQUEUE@{THREADCALLQUEUE}}
+\index{THREADCALLQUEUE@{THREADCALLQUEUE}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ typedef std::map$<$DWORD, {\bf CALLQUEUE}$>$ {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::{\bf THREADCALLQUEUE}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_88b22e5f24ed2fcf26bea54db29091aa}
+
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!CallScheduler@{CallScheduler}}
+\index{CallScheduler@{CallScheduler}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::{\bf Call\-Scheduler} ()\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_0715f4fa0b068a6e1c34777b35e2936c}
+
+
+Constructor. 
+
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!CallScheduler@{CallScheduler}}
+\index{CallScheduler@{CallScheduler}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::{\bf Call\-Scheduler} (const {\bf Call\-Scheduler}$<$ Pickup\-Policy $>$ \&)\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_96fe4dfc72728e66e364e94dc4f978f9}
+
+
+Copy constructor. 
+
+\begin{Desc}
+\item[Remarks:]Not implemented, to avoid copies. \end{Desc}
+
+
+\subsection{Member Function Documentation}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ {\bf Call\-Scheduler}$<$ Pickup\-Policy $>$ $\ast$ {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::get\-Instance ()\hspace{0.3cm}{\tt  [static]}}\label{class_thread_synch_1_1_call_scheduler_337fe8bd1fccbe30b610c5eb094a2ae4}
+
+
+\begin{Desc}
+\item[Returns:]A pointer to the \doxyref{Call\-Scheduler}{p.}{class_thread_synch_1_1_call_scheduler} implementation. \end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!syncCall@{syncCall}}
+\index{syncCall@{syncCall}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ template$<$typename Return\-Value\-Type$>$ Return\-Value\-Type {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::sync\-Call (DWORD {\em dw\-Thread\-Id}, boost::function$<$ Return\-Value\-Type()$>$ {\em callback}, DWORD {\em dw\-Timeout})}\label{class_thread_synch_1_1_call_scheduler_989f3e0d31bed40bfcb9bebc21e76011}
+
+
+The function which schedules calls to be made across threads, and expects a few exceptions might be thrown. 
+
+\begin{Desc}
+\item[Warning:]Don't specify \char`\"{}void\char`\"{} for Return\-Value\-Type. Call \doxyref{sync\-Call()}{p.}{class_thread_synch_1_1_call_scheduler_989f3e0d31bed40bfcb9bebc21e76011} or sync\-Call$<$Exception\-Types$<$$>$$>$ instead. \end{Desc}
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Thread\-Id}]the id of the thread to make the call in. \item[\mbox{$\leftarrow$} {\em callback}]functor which executes the callback. \item[\mbox{$\leftarrow$} {\em dw\-Timeout}]number of milliseconds to wait before terminating. \item[\mbox{$\leftarrow$} {\em Return\-Value\-Type}]return value, usually deduced from the boost function. \item[\mbox{$\leftarrow$} {\em Exceptions}]expected exceptions, specified as a comma separated template parameters to Exception\-Types. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]the returned value from the synchronized call. \end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!syncCall@{syncCall}}
+\index{syncCall@{syncCall}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ template$<$typename Return\-Value\-Type$>$ Return\-Value\-Type {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::sync\-Call (DWORD {\em dw\-Thread\-Id}, boost::function$<$ Return\-Value\-Type()$>$ {\em callback}, DWORD {\em dw\-Timeout})}\label{class_thread_synch_1_1_call_scheduler_989f3e0d31bed40bfcb9bebc21e76011}
+
+
+The function which schedules calls to be made across threads. 
+
+\begin{Desc}
+\item[Warning:]Don't specify \char`\"{}void\char`\"{} for Return\-Value\-Type. Call \doxyref{sync\-Call()}{p.}{class_thread_synch_1_1_call_scheduler_989f3e0d31bed40bfcb9bebc21e76011} or sync\-Call$<$Exception\-Types$<$$>$$>$ instead. \end{Desc}
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Thread\-Id}]the id of the thread to make the call in. \item[\mbox{$\leftarrow$} {\em callback}]functor which executes the callback. \item[\mbox{$\leftarrow$} {\em dw\-Timeout}]number of milliseconds to wait before terminating. \item[\mbox{$\leftarrow$} {\em Return\-Value\-Type}]return value, usually deduced from the boost function. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]the returned value from the synchronized call. \end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!syncCall@{syncCall}}
+\index{syncCall@{syncCall}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ template$<$typename Exceptions$>$ void {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::sync\-Call (DWORD {\em dw\-Thread\-Id}, boost::function$<$ void()$>$ {\em callback}, DWORD {\em dw\-Timeout})}\label{class_thread_synch_1_1_call_scheduler_fcd34e956d15bb1d6d98ed8555c15dff}
+
+
+The function which schedules calls to be made across threads, and expects a few exceptions might be thrown. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Thread\-Id}]the id of the thread to make the call in. \item[\mbox{$\leftarrow$} {\em callback}]functor which executes the callback. \item[\mbox{$\leftarrow$} {\em dw\-Timeout}]number of milliseconds to wait before terminating. \item[\mbox{$\leftarrow$} {\em Exceptions}]expected exceptions, specified as a comma separated template parameters to Exception\-Types. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Note:]This function serves synchronized calls with no (void) return value. \end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!syncCall@{syncCall}}
+\index{syncCall@{syncCall}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ void {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::sync\-Call (DWORD {\em dw\-Thread\-Id}, boost::function$<$ void()$>$ {\em callback}, DWORD {\em dw\-Timeout})}\label{class_thread_synch_1_1_call_scheduler_fcd34e956d15bb1d6d98ed8555c15dff}
+
+
+The function which schedules calls to be made across threads. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Thread\-Id}]the id of the thread to make the call in. \item[\mbox{$\leftarrow$} {\em callback}]functor which executes the callback. \item[\mbox{$\leftarrow$} {\em dw\-Timeout}]number of milliseconds to wait before terminating. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Note:]This function serves synchronized calls with no (void) return value. \end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!executeScheduledCalls@{executeScheduledCalls}}
+\index{executeScheduledCalls@{executeScheduledCalls}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ void APIENTRY {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::execute\-Scheduled\-Calls ({\bf Call\-Scheduler}$<$ Pickup\-Policy $>$ $\ast$ {\em p\-Scheduler\-Instance})\hspace{0.3cm}{\tt  [static]}}\label{class_thread_synch_1_1_call_scheduler_3bf23335dbab7475823385cfb7e868cb}
+
+
+Exceutes all scheuled calls for the current thread. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em p\-Scheduler\-Instance}]which singleton instance to run the operations on. \end{description}
+\end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!executeCallHandler@{executeCallHandler}}
+\index{executeCallHandler@{executeCallHandler}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ void {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::execute\-Call\-Handler (DWORD {\em dw\-Thread\-Id}, {\bf Call\-Handler} $\ast$ {\em p\-Call\-Handler}, DWORD {\em dw\-Timeout})\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_3f0fe348a2fb08df5f5a0d1d28522265}
+
+
+Internal helper function shared between the different sync\-Call flavors. 
+
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!operator=@{operator=}}
+\index{operator=@{operator=}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ const {\bf Call\-Scheduler}\& {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::operator= (const {\bf Call\-Scheduler}$<$ Pickup\-Policy $>$ \&)\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_381d57f81f2a80fd7cdc706c296a1ee6}
+
+
+Assignment operator. 
+
+\begin{Desc}
+\item[Remarks:]Not implemented, to avoid copies. \end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!enqueueThreadCall@{enqueueThreadCall}}
+\index{enqueueThreadCall@{enqueueThreadCall}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ void {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::enqueue\-Thread\-Call (DWORD {\em dw\-Thread\-Id}, {\bf Call\-Handler} $\ast$ {\em p\-Callback})\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_582a080efb6f92ca0532eb7eec820dfb}
+
+
+adds a call to the specified therad's queue. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Thread\-Id}]the id of the thread to enqueue in. \item[\mbox{$\leftarrow$} {\em p\-Callback}]pointer to a \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} instance in which the details of the callback functor resides. \end{description}
+\end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!dequeueThreadCall@{dequeueThreadCall}}
+\index{dequeueThreadCall@{dequeueThreadCall}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ void {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::dequeue\-Thread\-Call (DWORD {\em dw\-Thread\-Id}, {\bf Call\-Handler} $\ast$ {\em p\-Callback})\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_e503502d552191ef90a3b0c3dfe53db6}
+
+
+removes a call off a thread's queue. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Thread\-Id}]the id of the thread to enqueue in. \item[\mbox{$\leftarrow$} {\em p\-Callback}]pointer to a \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} instance in which the details of the callback functor resides. \end{description}
+\end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!getNextCallFromQueue@{getNextCallFromQueue}}
+\index{getNextCallFromQueue@{getNextCallFromQueue}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ {\bf Call\-Handler} $\ast$ {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::get\-Next\-Call\-From\-Queue (DWORD {\em dw\-Thread\-Id}, boost::shared\_\-ptr$<$ boost::try\_\-mutex::scoped\_\-try\_\-lock $>$ {\em p\-Call\-Handler\-Lock})\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_13aed07b2a53acffb3448bd014d3a348}
+
+
+Function to fetch the next \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} off the specified queue. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Thread\-Id}]the id of the thread to get a call for. \item[\mbox{$\leftarrow$} {\em p\-Call\-Handler\-Lock}]a lock object, which has locked a resource in the \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} for simultaneous access. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]The next scheduled \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler}. \end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!onRethrownExceptionDestroyed@{onRethrownExceptionDestroyed}}
+\index{onRethrownExceptionDestroyed@{onRethrownExceptionDestroyed}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ static void {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::on\-Rethrown\-Exception\-Destroyed (boost::shared\_\-ptr$<$ {\bf Call\-Handler} $>$ {\em p\-Call\-Handler})\hspace{0.3cm}{\tt  [inline, static, private]}}\label{class_thread_synch_1_1_call_scheduler_49c20888be3dda00adb2fa3620fac7fd}
+
+
+Callback for Call\-Handler's rethrow mechanism \begin{Desc}
+\item[Remarks:]Will be called by the throw\-Hooked wrapper when a re-thrown exception has been destroyed. The shared\_\-ptr will take care of deleting the \doxyref{Call\-Handler}{p.}{class_thread_synch_1_1_call_handler} pointer. \end{Desc}
+
+
+
+
+\subsection{Member Data Documentation}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!m_pInstance@{m\_\-pInstance}}
+\index{m_pInstance@{m\_\-pInstance}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ {\bf Call\-Scheduler}$<$ Pickup\-Policy $>$ $\ast$ {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::{\bf m\_\-p\-Instance}\hspace{0.3cm}{\tt  [static, private]}}\label{class_thread_synch_1_1_call_scheduler_1a23691056ee42199c546be3d5daf1d9}
+
+
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!m_instanceMutex@{m\_\-instanceMutex}}
+\index{m_instanceMutex@{m\_\-instanceMutex}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ boost::mutex {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::{\bf m\_\-instance\-Mutex}\hspace{0.3cm}{\tt  [static, private]}}\label{class_thread_synch_1_1_call_scheduler_6f891f1e2340b23026863754181bb10c}
+
+
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!m_threadQueueMutex@{m\_\-threadQueueMutex}}
+\index{m_threadQueueMutex@{m\_\-threadQueueMutex}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ boost::mutex {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::{\bf m\_\-thread\-Queue\-Mutex}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_4aaa322f3affe7c26d17a8e639b6e032}
+
+
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!m_threadQueue@{m\_\-threadQueue}}
+\index{m_threadQueue@{m\_\-threadQueue}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ {\bf THREADCALLQUEUE} {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::{\bf m\_\-thread\-Queue}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_scheduler_b192ce1ea60ce848a2a5132b59cc155e}
+
+
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Call\-Scheduler.h}\end{CompactItemize}

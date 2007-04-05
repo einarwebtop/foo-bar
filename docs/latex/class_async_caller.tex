@@ -1,0 +1,127 @@
+\section{Async\-Caller Class Reference}
+\label{class_async_caller}\index{AsyncCaller@{AsyncCaller}}
+{\tt \#include $<$Async\-Caller.h$>$}
+
+Collaboration diagram for Async\-Caller:\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+template$<$typename T$>$ T {\bf sync\-Call} (DWORD dw\-Thread\-Id, boost::function$<$ T(void)$>$ func, DWORD dw\-Timeout)
+\end{CompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{CompactItemize}
+\item 
+static {\bf Async\-Caller} $\ast$ {\bf get\-Instance} ()
+\end{CompactItemize}
+\subsection*{Private Types}
+\begin{CompactItemize}
+\item 
+typedef std::list$<$ {\bf Callback\-Info} $\ast$ $>$ {\bf CALLBACKINFOLIST}
+\item 
+typedef std::map$<$ DWORD, {\bf CALLBACKINFOLIST} $>$ {\bf THREADQUEUE}
+\end{CompactItemize}
+\subsection*{Private Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Async\-Caller} ()
+\item 
+{\bf Async\-Caller} (const {\bf Async\-Caller} \&)
+\item 
+const {\bf Async\-Caller} \& {\bf operator=} (const {\bf Async\-Caller} \&)
+\end{CompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{CompactItemize}
+\item 
+static void APIENTRY {\bf APCCallback} (ULONG\_\-PTR dw\-Param)
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+{\bf Critical\-Section} {\bf m\_\-thread\-Queue\-Crit\-Sect}
+\item 
+{\bf THREADQUEUE} {\bf m\_\-thread\-Queue}
+\end{CompactItemize}
+\subsection*{Static Private Attributes}
+\begin{CompactItemize}
+\item 
+static {\bf Async\-Caller} $\ast$ {\bf m\_\-p\-Instance}
+\item 
+static {\bf Critical\-Section} {\bf m\_\-instance\-Crit\-Sect}
+\end{CompactItemize}
+
+
+\subsection{Member Typedef Documentation}
+\index{AsyncCaller@{Async\-Caller}!CALLBACKINFOLIST@{CALLBACKINFOLIST}}
+\index{CALLBACKINFOLIST@{CALLBACKINFOLIST}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}typedef std::list$<${\bf Callback\-Info}$\ast$$>$ {\bf Async\-Caller::CALLBACKINFOLIST}\hspace{0.3cm}{\tt  [private]}}\label{class_async_caller_96982b0df7c13ff0d704ec62bed89177}
+
+
+\index{AsyncCaller@{Async\-Caller}!THREADQUEUE@{THREADQUEUE}}
+\index{THREADQUEUE@{THREADQUEUE}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}typedef std::map$<$DWORD, {\bf CALLBACKINFOLIST}$>$ {\bf Async\-Caller::THREADQUEUE}\hspace{0.3cm}{\tt  [private]}}\label{class_async_caller_598329a2560543f300d6eabc1d64294b}
+
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{AsyncCaller@{Async\-Caller}!AsyncCaller@{AsyncCaller}}
+\index{AsyncCaller@{AsyncCaller}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Async\-Caller::Async\-Caller ()\hspace{0.3cm}{\tt  [private]}}\label{class_async_caller_e4ab3960e98178b7605dac44196818a9}
+
+
+\index{AsyncCaller@{Async\-Caller}!AsyncCaller@{AsyncCaller}}
+\index{AsyncCaller@{AsyncCaller}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Async\-Caller::Async\-Caller (const {\bf Async\-Caller} \&)\hspace{0.3cm}{\tt  [private]}}\label{class_async_caller_aadb352c8644de74f3b8f0a64aae73f5}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{AsyncCaller@{Async\-Caller}!syncCall@{syncCall}}
+\index{syncCall@{syncCall}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T Async\-Caller::sync\-Call (DWORD {\em dw\-Thread\-Id}, boost::function$<$ T(void)$>$ {\em func}, DWORD {\em dw\-Timeout})\hspace{0.3cm}{\tt  [inline]}}\label{class_async_caller_122481379f859397e7005a18eb9de0cb}
+
+
+\index{AsyncCaller@{Async\-Caller}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Async\-Caller} $\ast$ Async\-Caller::get\-Instance ()\hspace{0.3cm}{\tt  [static]}}\label{class_async_caller_50d891b4b27f59fade463127276a188f}
+
+
+\index{AsyncCaller@{Async\-Caller}!operator=@{operator=}}
+\index{operator=@{operator=}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}const {\bf Async\-Caller}\& Async\-Caller::operator= (const {\bf Async\-Caller} \&)\hspace{0.3cm}{\tt  [private]}}\label{class_async_caller_67590e47a82ff258bfd9dafb71de0ca3}
+
+
+\index{AsyncCaller@{Async\-Caller}!APCCallback@{APCCallback}}
+\index{APCCallback@{APCCallback}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void APIENTRY Async\-Caller::APCCallback (ULONG\_\-PTR {\em dw\-Param})\hspace{0.3cm}{\tt  [static, private]}}\label{class_async_caller_f44e0675be3e4dccaf7b10ca414ace2a}
+
+
+
+
+\subsection{Member Data Documentation}
+\index{AsyncCaller@{Async\-Caller}!m_pInstance@{m\_\-pInstance}}
+\index{m_pInstance@{m\_\-pInstance}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Async\-Caller} $\ast$ {\bf Async\-Caller::m\_\-p\-Instance}\hspace{0.3cm}{\tt  [static, private]}}\label{class_async_caller_23f2977f4184bd1f991ba7a1dfadc482}
+
+
+\index{AsyncCaller@{Async\-Caller}!m_instanceCritSect@{m\_\-instanceCritSect}}
+\index{m_instanceCritSect@{m\_\-instanceCritSect}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Critical\-Section} {\bf Async\-Caller::m\_\-instance\-Crit\-Sect}\hspace{0.3cm}{\tt  [static, private]}}\label{class_async_caller_a42421ea941712ba0b3ae2c205dd4483}
+
+
+\index{AsyncCaller@{Async\-Caller}!m_threadQueueCritSect@{m\_\-threadQueueCritSect}}
+\index{m_threadQueueCritSect@{m\_\-threadQueueCritSect}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Critical\-Section} {\bf Async\-Caller::m\_\-thread\-Queue\-Crit\-Sect}\hspace{0.3cm}{\tt  [private]}}\label{class_async_caller_118883b8b5baf000201a43667a81a5a9}
+
+
+\index{AsyncCaller@{Async\-Caller}!m_threadQueue@{m\_\-threadQueue}}
+\index{m_threadQueue@{m\_\-threadQueue}!AsyncCaller@{Async\-Caller}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf THREADQUEUE} {\bf Async\-Caller::m\_\-thread\-Queue}\hspace{0.3cm}{\tt  [private]}}\label{class_async_caller_cef4c0944fd719b0d161c591f3a77062}
+
+
+
+
+The documentation for this class was generated from the following files:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Async\-Caller.h}\item 
+Thread\-Synch/{\bf Async\-Caller.cpp}\end{CompactItemize}

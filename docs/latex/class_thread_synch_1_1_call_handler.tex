@@ -1,0 +1,246 @@
+\section{Thread\-Synch::Call\-Handler Class Reference}
+\label{class_thread_synch_1_1_call_handler}\index{ThreadSynch::CallHandler@{ThreadSynch::CallHandler}}
+A class which stores information about a cross thread call. This class will keep a functor with bound parameters prior to a synchronized call, and provide a return value and exception information upon completion.  
+
+
+{\tt \#include $<$Call\-Handler.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Call\-Handler} ()
+\item 
+{\bf $\sim$Call\-Handler} ()
+\item 
+template$<$typename T, class E$>$ void {\bf set\-Call\-Functor} (boost::function$<$ T()$>$ func)
+\begin{CompactList}\small\item\em function which sets the callback functor to be run. \item\end{CompactList}\item 
+template$<$class E$>$ void {\bf set\-Call\-Functor} (boost::function$<$ void()$>$ func)
+\item 
+BOOL {\bf wait\-For\-Completion} (DWORD dw\-Timeout) const 
+\begin{CompactList}\small\item\em Waits for completion. \item\end{CompactList}\item 
+void {\bf execute\-Callback} ()
+\begin{CompactList}\small\item\em Executes the scheduled function. The scheduled function is executed and the return value is set. \item\end{CompactList}\item 
+BOOL {\bf is\-Completed} () const
+\begin{CompactList}\small\item\em Returns the status of the scheduled call. \item\end{CompactList}\item 
+BOOL {\bf caught\-Exception} () const
+\item 
+template$<$typename T$>$ T {\bf get\-Return\-Value} () const
+\begin{CompactList}\small\item\em Gets the stored return value. \item\end{CompactList}\item 
+void {\bf rethrow\-Exception} (boost::function$<$ void()$>$ on\-Exception\-Destroyed)
+\begin{CompactList}\small\item\em Rethrows an exception thrown by the exception expecter. \item\end{CompactList}\item 
+boost::try\_\-mutex $\ast$ {\bf get\-Access\-Mutex} () const
+\begin{CompactList}\small\item\em Opens up for locks on the structure. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Private Member Functions}
+\begin{CompactItemize}
+\item 
+void {\bf on\-Exception\-Expecter\-Complete} ({\bf details::Caught\-Exception\-Type} etype)
+\begin{CompactList}\small\item\em notification that the scheduled call handled threw an exception \item\end{CompactList}\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+HANDLE {\bf m\_\-h\-Completed\-Event}
+\item 
+boost::scoped\_\-array$<$ BYTE $>$ {\bf m\_\-p\-Return\-Value}
+\item 
+boost::function$<$ void()$>$ {\bf m\_\-execute\-Call}
+\item 
+boost::function$<$ void(boost::function$<$ void()$>$)$>$ {\bf m\_\-rethrow\-Exception}
+\item 
+boost::function$<$ void()$>$ {\bf m\_\-free\-Retval\-Binder}
+\item 
+boost::function$<$ void()$>$ {\bf m\_\-free\-Exception\-Expecter}
+\item 
+boost::try\_\-mutex {\bf m\_\-access\-Mutex}
+\item 
+BOOL {\bf m\_\-b\-Call\-Functor\-Set}
+\item 
+BOOL {\bf m\_\-b\-Exception\-Caught}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+A class which stores information about a cross thread call. This class will keep a functor with bound parameters prior to a synchronized call, and provide a return value and exception information upon completion. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!CallHandler@{CallHandler}}
+\index{CallHandler@{CallHandler}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Thread\-Synch::Call\-Handler::Call\-Handler ()}\label{class_thread_synch_1_1_call_handler_00596b487225875df620860225cbdaff}
+
+
+Constructor \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!~CallHandler@{$\sim$CallHandler}}
+\index{~CallHandler@{$\sim$CallHandler}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Thread\-Synch::Call\-Handler::$\sim$Call\-Handler ()}\label{class_thread_synch_1_1_call_handler_babec161e856179c27dd9f4876ba64d2}
+
+
+Destructor 
+
+\subsection{Member Function Documentation}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!setCallFunctor@{setCallFunctor}}
+\index{setCallFunctor@{setCallFunctor}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T, class E$>$ void Thread\-Synch::Call\-Handler::set\-Call\-Functor (boost::function$<$ T()$>$ {\em func})}\label{class_thread_synch_1_1_call_handler_828f3f6b9d0ff47e8c79aba7b2934de9}
+
+
+function which sets the callback functor to be run. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em func}]A functor which accepts no parameters, and returns a type T or no value at all (void). \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Remarks:]All functor parameters must be bound with boost::bind. \end{Desc}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!setCallFunctor@{setCallFunctor}}
+\index{setCallFunctor@{setCallFunctor}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class E$>$ void Thread\-Synch::Call\-Handler::set\-Call\-Functor (boost::function$<$ void()$>$ {\em func})}\label{class_thread_synch_1_1_call_handler_55d65e7e9cf77f09d97d1c234cab63f2}
+
+
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!waitForCompletion@{waitForCompletion}}
+\index{waitForCompletion@{waitForCompletion}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}BOOL Thread\-Synch::Call\-Handler::wait\-For\-Completion (DWORD {\em dw\-Timeout}) const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_handler_44b5abe6a6f02e16d2a4d937ed2edc9d}
+
+
+Waits for completion. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Timeout}]Time span in milliseconds to wait for completion. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]Status for the call. \end{Desc}
+\begin{Desc}
+\item[Return values:]
+\begin{description}
+\item[{\em TRUE}]indicates that the call has completed. \item[{\em FALSE}]indicates that the call has not been completed. \end{description}
+\end{Desc}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!executeCallback@{executeCallback}}
+\index{executeCallback@{executeCallback}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Thread\-Synch::Call\-Handler::execute\-Callback ()\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_handler_f956917892782e2e93770f0ce949b930}
+
+
+Executes the scheduled function. The scheduled function is executed and the return value is set. 
+
+\begin{Desc}
+\item[Remarks:]When the call completes, an event will be signaled to indicate that the call has completed. This event will be set regardless of whether or not the scheduled call throws an exception. \end{Desc}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!isCompleted@{isCompleted}}
+\index{isCompleted@{isCompleted}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}BOOL Thread\-Synch::Call\-Handler::is\-Completed () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_handler_783d9b823407890a9db6204dbe8c0547}
+
+
+Returns the status of the scheduled call. 
+
+\begin{Desc}
+\item[Returns:]Completion status. \end{Desc}
+\begin{Desc}
+\item[Return values:]
+\begin{description}
+\item[{\em TRUE}]if the call has been made. \item[{\em FALSE}]if the call has not yet been made. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Remarks:]Will return TRUE even if an exception was thrown by the call. Use \doxyref{caught\-Exception()}{p.}{class_thread_synch_1_1_call_handler_503f40467d67c5e66d75d7e4adc982f2} to find whether or not an exception was caught. \end{Desc}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!caughtException@{caughtException}}
+\index{caughtException@{caughtException}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}BOOL Thread\-Synch::Call\-Handler::caught\-Exception () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_handler_503f40467d67c5e66d75d7e4adc982f2}
+
+
+\begin{Desc}
+\item[Returns:]Whether or not the scheduled call threw an exception \end{Desc}
+\begin{Desc}
+\item[Return values:]
+\begin{description}
+\item[{\em TRUE}]if an exception was thrown and caught \item[{\em FALSE}]if no exception was thrown \end{description}
+\end{Desc}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!getReturnValue@{getReturnValue}}
+\index{getReturnValue@{getReturnValue}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T Thread\-Synch::Call\-Handler::get\-Return\-Value () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_handler_a2d19cdb118b95b47c1e0c721543165b}
+
+
+Gets the stored return value. 
+
+\begin{Desc}
+\item[Returns:]The return value as stored by the call. \end{Desc}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!rethrowException@{rethrowException}}
+\index{rethrowException@{rethrowException}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Thread\-Synch::Call\-Handler::rethrow\-Exception (boost::function$<$ void()$>$ {\em on\-Exception\-Destroyed})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_handler_b82c52296707e77be495b73d9dfb840d}
+
+
+Rethrows an exception thrown by the exception expecter. 
+
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!getAccessMutex@{getAccessMutex}}
+\index{getAccessMutex@{getAccessMutex}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::try\_\-mutex$\ast$ Thread\-Synch::Call\-Handler::get\-Access\-Mutex () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_handler_fba6f20d909a441bf26f398acb08d00d}
+
+
+Opens up for locks on the structure. 
+
+\begin{Desc}
+\item[Returns:]A try\_\-mutex for this structure, which can either be scoped\_\-try\_\-lock'ed or scoped\_\-lock'ed. \end{Desc}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!onExceptionExpecterComplete@{onExceptionExpecterComplete}}
+\index{onExceptionExpecterComplete@{onExceptionExpecterComplete}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Thread\-Synch::Call\-Handler::on\-Exception\-Expecter\-Complete ({\bf details::Caught\-Exception\-Type} {\em etype})\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_0d085c7496eb484faf759febc3a2cb30}
+
+
+notification that the scheduled call handled threw an exception 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em etype}]Specifies which exception, if any, was thrown \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Remarks:]Called by the exception expecter when a call has been completed, in context of the thread that does the pickup. \end{Desc}
+
+
+\subsection{Member Data Documentation}
+\index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_hCompletedEvent@{m\_\-hCompletedEvent}}
+\index{m_hCompletedEvent@{m\_\-hCompletedEvent}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}HANDLE {\bf Thread\-Synch::Call\-Handler::m\_\-h\-Completed\-Event}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_8ed861e5e20506ff96046d79f24f2df2}
+
+
+An inner event handle which signals completion. \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_pReturnValue@{m\_\-pReturnValue}}
+\index{m_pReturnValue@{m\_\-pReturnValue}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::scoped\_\-array$<$BYTE$>$ {\bf Thread\-Synch::Call\-Handler::m\_\-p\-Return\-Value}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_cae5d7c277b1c5eeb585dada696c0775}
+
+
+Memory block which receives and stores the return value of the scheduled function. \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_executeCall@{m\_\-executeCall}}
+\index{m_executeCall@{m\_\-executeCall}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::function$<$void()$>$ {\bf Thread\-Synch::Call\-Handler::m\_\-execute\-Call}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_3073947e9e8cdd3505cfd6f97c146ffd}
+
+
+A functor which executes the call and attempts to retrieve the return value. \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_rethrowException@{m\_\-rethrowException}}
+\index{m_rethrowException@{m\_\-rethrowException}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::function$<$void(boost::function$<$void()$>$)$>$ {\bf Thread\-Synch::Call\-Handler::m\_\-rethrow\-Exception}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_0c9302eaa21ec02b3acb566cd92f1ab6}
+
+
+A functor which rethrows exceptions picked up by the expecter. The functor accepts one parameter, which is another functor to be called as a thrown exception object is destroyed. \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_freeRetvalBinder@{m\_\-freeRetvalBinder}}
+\index{m_freeRetvalBinder@{m\_\-freeRetvalBinder}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::function$<$void()$>$ {\bf Thread\-Synch::Call\-Handler::m\_\-free\-Retval\-Binder}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_7e6ad0e53a411868267ac2626b3fa45f}
+
+
+A functor which instructs the retval binder class to free itself -- needed since we cannot reference the class without full template parameter information. \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_freeExceptionExpecter@{m\_\-freeExceptionExpecter}}
+\index{m_freeExceptionExpecter@{m\_\-freeExceptionExpecter}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::function$<$void()$>$ {\bf Thread\-Synch::Call\-Handler::m\_\-free\-Exception\-Expecter}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_25ccedc0706f1d48f1bcee659cfd9d41}
+
+
+A functor which instructs the exception expecter class to free itself -- needed since we cannot reference the class without full template parameter information. \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_accessMutex@{m\_\-accessMutex}}
+\index{m_accessMutex@{m\_\-accessMutex}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::try\_\-mutex {\bf Thread\-Synch::Call\-Handler::m\_\-access\-Mutex}\hspace{0.3cm}{\tt  [mutable, private]}}\label{class_thread_synch_1_1_call_handler_0b8aa60b33c1b4bb8f5294da8f41f18a}
+
+
+Inner mutex which provides locking functionality on the structure. \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_bCallFunctorSet@{m\_\-bCallFunctorSet}}
+\index{m_bCallFunctorSet@{m\_\-bCallFunctorSet}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}BOOL {\bf Thread\-Synch::Call\-Handler::m\_\-b\-Call\-Functor\-Set}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_8c6ab458b8da6323d0b55291777523b2}
+
+
+Indicates whether or not set\-Call\-Functor has been called already \index{ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}!m_bExceptionCaught@{m\_\-bExceptionCaught}}
+\index{m_bExceptionCaught@{m\_\-bExceptionCaught}!ThreadSynch::CallHandler@{Thread\-Synch::Call\-Handler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}BOOL {\bf Thread\-Synch::Call\-Handler::m\_\-b\-Exception\-Caught}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_call_handler_507812e48192ed1397fcbb38311649ab}
+
+
+Indicates whether or not an exception was thrown by the call 
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Call\-Handler.h}\end{CompactItemize}

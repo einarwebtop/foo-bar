@@ -1,0 +1,120 @@
+\section{Callback\-Info Class Reference}
+\label{class_callback_info}\index{CallbackInfo@{CallbackInfo}}
+{\tt \#include $<$Callback\-Info.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Callback\-Info} ()
+\item 
+{\bf $\sim$Callback\-Info} ()
+\item 
+template$<$typename T$>$ void {\bf set\-Callback} (boost::function$<$ T(void)$>$ func)
+\item 
+DWORD {\bf wait\-For\-Completion} (DWORD dw\-Timeout) const 
+\item 
+void {\bf execute\-Callback} ()
+\item 
+BOOL {\bf is\-Completed} () const
+\item 
+template$<$typename T$>$ T {\bf get\-Return\-Value} () const
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+HANDLE {\bf m\_\-h\-Completed\-Event}
+\item 
+BOOL {\bf m\_\-b\-Entered}
+\item 
+BOOL {\bf m\_\-b\-Completed}
+\item 
+void $\ast$ {\bf m\_\-p\-Return\-Value}
+\item 
+boost::function$<$ void()$>$ {\bf m\_\-callback}
+\item 
+boost::function$<$ void()$>$ {\bf m\_\-free\-Callback}
+\end{CompactItemize}
+\subsection*{Classes}
+\begin{CompactItemize}
+\item 
+class {\bf Functor\-Saver}
+\end{CompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{CallbackInfo@{Callback\-Info}!CallbackInfo@{CallbackInfo}}
+\index{CallbackInfo@{CallbackInfo}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Callback\-Info::Callback\-Info ()\hspace{0.3cm}{\tt  [inline]}}\label{class_callback_info_567d581fd6b0dbffbc9f7970546fb9e1}
+
+
+\index{CallbackInfo@{Callback\-Info}!~CallbackInfo@{$\sim$CallbackInfo}}
+\index{~CallbackInfo@{$\sim$CallbackInfo}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}Callback\-Info::$\sim$Callback\-Info ()\hspace{0.3cm}{\tt  [inline]}}\label{class_callback_info_3b4176446f49da0c24fd42c657df763e}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{CallbackInfo@{Callback\-Info}!setCallback@{setCallback}}
+\index{setCallback@{setCallback}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ void Callback\-Info::set\-Callback (boost::function$<$ T(void)$>$ {\em func})\hspace{0.3cm}{\tt  [inline]}}\label{class_callback_info_6b739a205b26edf862e26a6eb0e9ee06}
+
+
+\index{CallbackInfo@{Callback\-Info}!waitForCompletion@{waitForCompletion}}
+\index{waitForCompletion@{waitForCompletion}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}DWORD Callback\-Info::wait\-For\-Completion (DWORD {\em dw\-Timeout}) const\hspace{0.3cm}{\tt  [inline]}}\label{class_callback_info_46924e7becb22d08e69a0957699d756a}
+
+
+\index{CallbackInfo@{Callback\-Info}!executeCallback@{executeCallback}}
+\index{executeCallback@{executeCallback}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Callback\-Info::execute\-Callback ()\hspace{0.3cm}{\tt  [inline]}}\label{class_callback_info_46af96941eea83dfe7bd728c8a1a6f23}
+
+
+\index{CallbackInfo@{Callback\-Info}!isCompleted@{isCompleted}}
+\index{isCompleted@{isCompleted}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}BOOL Callback\-Info::is\-Completed () const\hspace{0.3cm}{\tt  [inline]}}\label{class_callback_info_444d43bf06e70cf94f760dcf488000d3}
+
+
+\index{CallbackInfo@{Callback\-Info}!getReturnValue@{getReturnValue}}
+\index{getReturnValue@{getReturnValue}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T Callback\-Info::get\-Return\-Value () const\hspace{0.3cm}{\tt  [inline]}}\label{class_callback_info_fd52d5af90e644966558876f28da0dfc}
+
+
+
+
+\subsection{Member Data Documentation}
+\index{CallbackInfo@{Callback\-Info}!m_hCompletedEvent@{m\_\-hCompletedEvent}}
+\index{m_hCompletedEvent@{m\_\-hCompletedEvent}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}HANDLE {\bf Callback\-Info::m\_\-h\-Completed\-Event}\hspace{0.3cm}{\tt  [private]}}\label{class_callback_info_049ca0c4f5a8d4fe464f386c7df633aa}
+
+
+\index{CallbackInfo@{Callback\-Info}!m_bEntered@{m\_\-bEntered}}
+\index{m_bEntered@{m\_\-bEntered}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}BOOL {\bf Callback\-Info::m\_\-b\-Entered}\hspace{0.3cm}{\tt  [private]}}\label{class_callback_info_5f75aefb5dfa365616544dad53f192c5}
+
+
+\index{CallbackInfo@{Callback\-Info}!m_bCompleted@{m\_\-bCompleted}}
+\index{m_bCompleted@{m\_\-bCompleted}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}BOOL {\bf Callback\-Info::m\_\-b\-Completed}\hspace{0.3cm}{\tt  [private]}}\label{class_callback_info_e254ba26979e89d780d00ceacbf85c62}
+
+
+\index{CallbackInfo@{Callback\-Info}!m_pReturnValue@{m\_\-pReturnValue}}
+\index{m_pReturnValue@{m\_\-pReturnValue}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf Callback\-Info::m\_\-p\-Return\-Value}\hspace{0.3cm}{\tt  [private]}}\label{class_callback_info_f527259f99c9d557efbc417c14a79ef5}
+
+
+\index{CallbackInfo@{Callback\-Info}!m_callback@{m\_\-callback}}
+\index{m_callback@{m\_\-callback}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::function$<$void ()$>$ {\bf Callback\-Info::m\_\-callback}\hspace{0.3cm}{\tt  [private]}}\label{class_callback_info_c0177e311bd7312d3ad06d93e9daf3e3}
+
+
+\index{CallbackInfo@{Callback\-Info}!m_freeCallback@{m\_\-freeCallback}}
+\index{m_freeCallback@{m\_\-freeCallback}!CallbackInfo@{Callback\-Info}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::function$<$void ()$>$ {\bf Callback\-Info::m\_\-free\-Callback}\hspace{0.3cm}{\tt  [private]}}\label{class_callback_info_6f3354cb7f393536e76356f5c5511c22}
+
+
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Callback\-Info.h}\end{CompactItemize}

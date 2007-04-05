@@ -1,0 +1,6 @@
+	March 13th, 2007 (0.7.2): 
+		* Fixed some minor problems in the CallScheduler::syncCall templates.
+		* Renamed the demo projects
+		* Added a unit test project, with some initial test cases
+	December 13th, 2006 (0.7.1): Fixed missing destructor for FunctorRetvalBinder.
+	December 10th, 2006 (0.7.0): Initial public release.
