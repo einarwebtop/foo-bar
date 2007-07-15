@@ -20,16 +20,16 @@
 
 namespace ThreadSynch
 {
-	/*!@class PicupPolicyProvider
-	** @brief Interface of all picup policies.
-	*/
-	class PickupPolicyProvider
-	{
-	public:
-		typedef void (APIENTRY *PCALLBACK)(ULONG_PTR ulpFunctionParameter);
-		static void scheduleThreadCallback(DWORD dwThreadId, PCALLBACK pCallbackFunction, ULONG_PTR ulpFunctionParameter);
+    /*!@class PicupPolicyProvider
+    ** @brief Interface of all picup policies.
+    */
+    class PickupPolicyProvider
+    {
+    public:
+        typedef void (APIENTRY *PCALLBACK)(ULONG_PTR ulpFunctionParameter);
+        static void scheduleThreadCallback(DWORD dwThreadId, PCALLBACK pCallbackFunction, ULONG_PTR ulpFunctionParameter);
 
-	private:
-		PickupPolicyProvider() {}
-	};
+    private:
+        PickupPolicyProvider() {}
+    };
 }

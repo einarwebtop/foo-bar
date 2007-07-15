@@ -18,21 +18,21 @@
 
 namespace ThreadSynch
 {
-	/************************************************************************
-	** Exceptions
-	*/
+    /************************************************************************
+    ** Exceptions
+    */
 
-	/*!@class PickupSchedulingFailedException
-	** @brief thrown when a pickup policy fails.
-	*/
-	class PickupSchedulingFailedException : public std::exception
-	{
-	public:
-		PickupSchedulingFailedException()
-		{}
+    /*!@class PickupSchedulingFailedException
+    ** @brief thrown when a pickup policy fails.
+    */
+    class PickupSchedulingFailedException : public std::exception
+    {
+    public:
+        PickupSchedulingFailedException()
+        {}
 
-		PickupSchedulingFailedException(const char *const& _What)
-			: std::exception(_What)
-		{}
-	};
+        PickupSchedulingFailedException(const char *const& _What)
+            : std::exception(_What)
+        {}
+    };
 }

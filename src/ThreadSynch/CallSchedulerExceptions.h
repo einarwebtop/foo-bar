@@ -18,47 +18,47 @@
 
 namespace ThreadSynch
 {
-	/************************************************************************
-	** Exceptions
-	*/
+    /************************************************************************
+    ** Exceptions
+    */
 
-	/*!@class CallSchedulingFailedException
-	** @brief thrown when some undefined factor stops the scheduled call from running.
-	** @remark
-	**   Todo: Improve on the base exception class, to provide better message passing options
-	*/
-	class CallSchedulingFailedException : public std::exception
-	{
-	public:
-		CallSchedulingFailedException()
-		{}
+    /*!@class CallSchedulingFailedException
+    ** @brief thrown when some undefined factor stops the scheduled call from running.
+    ** @remark
+    **   Todo: Improve on the base exception class, to provide better message passing options
+    */
+    class CallSchedulingFailedException : public std::exception
+    {
+    public:
+        CallSchedulingFailedException()
+        {}
 
-		CallSchedulingFailedException(const char *const& _What)
-			: std::exception(_What)
-		{}
-	};
+        CallSchedulingFailedException(const char *const& _What)
+            : std::exception(_What)
+        {}
+    };
 
-	/*!@class CallTimeoutException
-	** @brief thrown when a scheduled call times out.
-	*/
-	class CallTimeoutException : public std::exception
-	{
-	public:
-		CallTimeoutException()
-		{}
+    /*!@class CallTimeoutException
+    ** @brief thrown when a scheduled call times out.
+    */
+    class CallTimeoutException : public std::exception
+    {
+    public:
+        CallTimeoutException()
+        {}
 
-		CallTimeoutException(const char *const& _What)
-			: std::exception(_What)
-		{}
-	};
+        CallTimeoutException(const char *const& _What)
+            : std::exception(_What)
+        {}
+    };
 
-	/*!@class UnexpectedException
-	** @brief thrown when a scheduled call throws an exception which wasn't expected by the user.
-	*/
-	class UnexpectedException
-	{
-	public:
-		UnexpectedException()
-		{}
-	};
+    /*!@class UnexpectedException
+    ** @brief thrown when a scheduled call throws an exception which wasn't expected by the user.
+    */
+    class UnexpectedException
+    {
+    public:
+        UnexpectedException()
+        {}
+    };
 }
