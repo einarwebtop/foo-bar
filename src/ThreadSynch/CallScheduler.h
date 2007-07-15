@@ -133,7 +133,7 @@ namespace ThreadSynch
 		/*! 
 		** @brief Internal helper function shared between the different syncCall flavors
 		*/
-		void executeCallHandler(DWORD dwThreadId, CallHandler* pCallHandler, DWORD dwTimeout);
+		void executeCallHandler(DWORD dwThreadId, CallHandler* pCallHandler, DWORD dwTimeout, boost::shared_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock);
 
 		/*! 
 		** @brief Copy constructor
@@ -210,8 +210,9 @@ namespace ThreadSynch
 		// Initialize the container which holds the call to be done by the target thread
 		pCallHandler->setCallFunctor<ReturnValueType, Exceptions>(callback);
 
+        boost::shared_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock;
 		// Process the call handler
-		executeCallHandler(dwThreadId, pCallHandler.get(), dwTimeout);
+		executeCallHandler(dwThreadId, pCallHandler.get(), dwTimeout, pCallHandlerLock);
 
 		BOOL bRetvalSet = FALSE;
 		ReturnValueType returnValue;
@@ -268,8 +269,9 @@ namespace ThreadSynch
 		// Initialize the container which holds the call to be done by the target thread
 		pCallHandler->setCallFunctor<Exceptions>(callback);
 
+        boost::shared_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock;
 		// Process the call handler
-		executeCallHandler(dwThreadId, pCallHandler.get(), dwTimeout);
+		executeCallHandler(dwThreadId, pCallHandler.get(), dwTimeout, pCallHandlerLock);
 
 		BOOL bRetvalSet = FALSE;
 
@@ -316,7 +318,7 @@ namespace ThreadSynch
 	}
 
 	template<class PickupPolicy>
-	void CallScheduler<PickupPolicy>::executeCallHandler(DWORD dwThreadId, CallHandler* pCallHandler, DWORD dwTimeout)
+	void CallScheduler<PickupPolicy>::executeCallHandler(DWORD dwThreadId, CallHandler* pCallHandler, DWORD dwTimeout, boost::shared_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock)
 	{
 		try
 		{
@@ -336,7 +338,7 @@ namespace ThreadSynch
 		// Obtain a lock on the access handler, preventing the scheduler to open it if the call
 		// has not yet been begun. If the callback sequence has been set in motion, this lock will
 		// wait until it has completed.
-		boost::try_mutex::scoped_lock callHandlerLock(*pCallHandler->getAccessMutex());
+        pCallHandlerLock.reset(new boost::try_mutex::scoped_try_lock(*pCallHandler->getAccessMutex()));
 	}
 
 	template<class PickupPolicy>

@@ -1,4 +1,4 @@
-ThreadSynch v0.7.2, March 13th, 2007
+ThreadSynch v0.7.3, July 15th, 2007
 
 ============================ LICENSE ==============================
 Copyright 2007 Einar Otto Stangvik
