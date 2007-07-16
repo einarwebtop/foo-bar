@@ -406,43 +406,46 @@ namespace ThreadSynch
     CallHandler* CallScheduler<PickupPolicy>::getNextCallFromQueue(DWORD dwThreadId, 
                                                                    boost::shared_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock)
     {
-        // Acquire a lock on the thread queue
-        boost::mutex::scoped_lock lock(m_threadQueueMutex);
-        THREADCALLQUEUE::iterator threadQueueIterator;
+		// Acquire a lock on the thread queue
+		boost::mutex::scoped_lock lock(m_threadQueueMutex);
+		THREADCALLQUEUE::iterator threadQueueIterator;
 
-        if((threadQueueIterator = m_threadQueue.find(dwThreadId)) != m_threadQueue.end())
-        {
-            // Find the queue for the current requested thread
-            CALLQUEUE* pCallbackDeque = &((*threadQueueIterator).second);
+		if((threadQueueIterator = m_threadQueue.find(dwThreadId)) != m_threadQueue.end())
+		{
+			// Find the queue for the current requested thread
+			CALLQUEUE* pCallbackQueue = &((*threadQueueIterator).second);
 
-            while(!pCallbackDeque->empty())
-            {
-                try
+            CALLQUEUE::iterator callbackQueueIterator;
+            for(callbackQueueIterator = pCallbackQueue->begin(); callbackQueueIterator != pCallbackQueue->end(); ++ callbackQueueIterator)
+			{
+                CallHandler* pCallHandler = *callbackQueueIterator;
+				
+				// Try to acquire a lock on the call handler, to prevent the scheduler from deallocating it
+				// while the function is running. While this lock is in place, the syncCall cannot
+				// destroy the CallHandler.
+				pCallHandlerLock.reset(new boost::try_mutex::scoped_try_lock(*pCallHandler->getAccessMutex(), false));
+                if(!pCallHandlerLock->try_lock())
                 {
-                    CallHandler* pCallHandler = pCallbackDeque->front();
-                    
-                    // Try to acquire a lock on the call handler, to prevent the scheduler from deallocating it
-                    // while the function is running. While this lock is in place, the syncCall cannot
-                    // destroy the CallHAndler.
-                    pCallHandlerLock.reset(new boost::try_mutex::scoped_try_lock(*pCallHandler->getAccessMutex()));
-                    pCallbackDeque->pop_front();
-                    
-                    // If this was the last item in the queues thread ..
-                    if(pCallbackDeque->empty())
-                    {
-                        // Erase the thread's queue
-                        m_threadQueue.erase(threadQueueIterator);
-                    }
+                    // We didn't get a lock on the CallHandler. This means that it's taken, and should not be parsed at this time.
+                    // Continue with the next queued item.
+                    pCallHandlerLock.reset();
+                    continue;
+                }
 
-                    return pCallHandler;
-                }
-                catch(boost::lock_error&)
-                {
-                    continue; // fetch the next available CallHandler
-                }
-            }
-        }
-        return NULL;
+                // The lock was obtained, so we can pop it off the queue
+				pCallbackQueue->pop_front();
+				
+				// If this was the last item in the queues thread ..
+				if(pCallbackQueue->empty())
+				{
+					// Erase the thread's queue
+					m_threadQueue.erase(threadQueueIterator);
+				}
+
+				return pCallHandler;
+			}
+		}
+		return NULL;
     }
 
     template<class PickupPolicy>

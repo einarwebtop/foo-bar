@@ -222,11 +222,11 @@ namespace ThreadSynch
             m_freeRetvalBinder();
         }
 
-        //// Deallocate the exeception expecter, if one is set
-        //if(m_freeExceptionExpecter)
-        //{
-        //  m_freeExceptionExpecter();
-        //}
+        // Deallocate the exeception expecter, if one is set
+        if(m_freeExceptionExpecter)
+        {
+          m_freeExceptionExpecter();
+        }
     }
 
     template<typename T, class E>
