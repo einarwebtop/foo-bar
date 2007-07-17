@@ -19,6 +19,7 @@
 #include <boost/test/unit_test_suite.hpp>
 #include <boost/test/output_test_stream.hpp>
 #include <boost/test/unit_test_log.hpp>
+#include <boost/test/execution_monitor.hpp>
 #include <boost/test/framework.hpp>
 #include <boost/test/detail/unit_test_parameters.hpp>
 #include <boost/test/utils/nullstream.hpp>
@@ -27,12 +28,13 @@
 #include "../ThreadSynch/ThreadSynch.h"
 #include "../ThreadSynch/APCPickupPolicy.h"
 
+
 #ifdef _DEBUG
-#pragma comment(lib, "libboost_test_exec_monitor-vc80-mt-gd.lib")
 #pragma comment(lib, "libboost_unit_test_framework-vc80-mt-gd.lib")
+#pragma comment(lib, "libboost_test_exec_monitor-vc80-mt-gd.lib")
 #else
-#pragma comment(lib, "libboost_test_exec_monitor-vc80-mt.lib")
 #pragma comment(lib, "libboost_unit_test_framework-vc80-mt.lib")
+#pragma comment(lib, "libboost_test_exec_monitor-vc80-mt.lib")
 #endif
 
 using namespace boost::unit_test;

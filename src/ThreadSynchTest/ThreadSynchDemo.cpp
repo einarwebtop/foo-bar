@@ -26,6 +26,7 @@ void rundemos();
 DWORD WINAPI demoThread(PVOID);
 void demoVoidFunction(char c);
 int demoIntFunction(char c);
+int demoIntFunctionDelayed(char c);
 string demoFunction(char c);
 
 // Global variables
@@ -44,8 +45,7 @@ int _tmain()
 	// Will detect the global buffer + singleton
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	cin.get();
-	return 0;
+    return 0;
 }
 
 /*******************************************************************************
@@ -112,29 +112,53 @@ void rundemos()
 		cout << "demoVoidFunction threw a demoException" << endl;
 	}
 
-	// Do a third cross thread call, to a function returning an int
-	try
-	{
-		// Expect a std::exception or demoException
-		int demoInt = scheduler->syncCall<int, ExceptionTypes<std::exception, demoException>>(dwThreadId, boost::bind(demoIntFunction, '!'), 500);
-		cout << "demoIntFunction returned: " << demoInt << endl;
-	}
-	catch(CallTimeoutException&)
-	{
-		cout << "Call timeout" << endl;
-	}
-	catch(CallSchedulingFailedException&)
-	{
-		cout << "Call scheduling failed -- Probably a broken pickup policy." << endl;
-	}
-	catch(std::exception& e)
-	{
-		cout << "demoIntFunction threw a std exception: " << e.what() << endl;
-	}
-	catch(demoException&)
-	{
-		cout << "demoIntFunction threw a demoException" << endl;
-	}
+    // Do a third cross thread call, to a function returning an int
+    try
+    {
+        // Expect a std::exception or demoException
+        int demoInt = scheduler->syncCall<int, ExceptionTypes<std::exception, demoException>>(dwThreadId, boost::bind(demoIntFunction, '!'), 500);
+        cout << "demoIntFunction returned: " << demoInt << endl;
+    }
+    catch(CallTimeoutException&)
+    {
+        cout << "Call timeout" << endl;
+    }
+    catch(CallSchedulingFailedException&)
+    {
+        cout << "Call scheduling failed -- Probably a broken pickup policy." << endl;
+    }
+    catch(std::exception& e)
+    {
+        cout << "demoIntFunction threw a std exception: " << e.what() << endl;
+    }
+    catch(demoException&)
+    {
+        cout << "demoIntFunction threw a demoException" << endl;
+    }
+
+    // Do a fourth cross thread call, to a function returning an int
+    try
+    {
+        // Expect a std::exception or demoException
+        Future<int> futureDemoInt = scheduler->asyncCall<int, ExceptionTypes<std::exception, demoException>>(dwThreadId, boost::bind(demoIntFunctionDelayed, '!'));
+        while(futureDemoInt.wait(10) == ASYNCH_CALL_PENDING)
+        {
+            cout << "Still waiting ..." << endl;
+        }
+        cout << "demoIntFunctionDelayed returned: " << futureDemoInt.getValue() << endl;
+    }
+    catch(CallSchedulingFailedException&)
+    {
+        cout << "Call scheduling failed -- Probably a broken pickup policy." << endl;
+    }
+    catch(std::exception& e)
+    {
+        cout << "demoIntFunctionDelayed threw a std exception: " << e.what() << endl;
+    }
+    catch(demoException&)
+    {
+        cout << "demoIntFunctionDelayed threw a demoException" << endl;
+    }
 
 	// Cleanup
 	SetEvent(hExternalEvent);
@@ -176,6 +200,14 @@ int demoIntFunction(char c)
 {
 	cout << "demoIntFunction called with c='" << c << "'" << endl;
 	return static_cast<int>(c);
+}
+
+// A demo function to be called from the secondary thread
+int demoIntFunctionDelayed(char c)
+{
+    Sleep(500);
+    cout << "demoIntFunctionDelayed called with c='" << c << "'" << endl;
+    return static_cast<int>(c);
 }
 
 // A demo function to be called from the secondary thread

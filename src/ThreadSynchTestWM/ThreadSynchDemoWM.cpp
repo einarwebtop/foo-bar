@@ -1,4 +1,11 @@
 /************************************************************************
+** ThreadSynchdemoWM
+** A GUI example for the ThreadSynch library.
+**
+** Note that this code is factored, and not structured as Win32 GUI apps
+** should be. Seeing as this is just an example, I've attempted to keep
+** it as short and concise as possible.
+**
 ** Copyright 2007 Einar Otto Stangvik
 ** 
 ** Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +21,6 @@
 ** limitations under the License.
 */
 
-/*
-** ThreadSynchdemoWM
-** A GUI example for the ThreadSynch library.
-**
-** Note that this code is factored, and not structured as Win32 GUI apps
-** should be. Seeing as this is just an example, I've attempted to keep
-** it as short and concise as possible.
-*/
 #include "pch.h"
 #include "ThreadSynchDemoWM.h"
 
@@ -134,7 +133,7 @@ DWORD WINAPI demoWorkerThread(PVOID)
 		// data owned by this worker thread
 		/* ... */
 
-		Sleep(1000);
+		Sleep(100);
 	}
 }
 

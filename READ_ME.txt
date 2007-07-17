@@ -1,4 +1,9 @@
-ThreadSynch v0.7.3, July 15th, 2007
+ThreadSynch v0.7.4a, July 15th, 2007
+
+NOTE: THIS IS AN ALPHA RELEASE. TEST USE ONLY.
+
+The library can be found at http://threadsynch.googlecode.com
+The authors blog can be found at http://einaros.blogspot.com
 
 ============================ LICENSE ==============================
 Copyright 2007 Einar Otto Stangvik
@@ -18,5 +23,3 @@ limitations under the License.
 
 Should you have any difficulties using it, be sure to read the skinny
 documentation found in the html directory, or contact me directly.
-
-The library can be found at http://threadsynch.googlecode.com

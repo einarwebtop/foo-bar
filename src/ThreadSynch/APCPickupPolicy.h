@@ -20,23 +20,23 @@
 
 namespace ThreadSynch
 {
-    class APCPickupPolicy : public PickupPolicyProvider
-    {
-    public:
-        static void scheduleThreadCallback(DWORD dwThreadId, PCALLBACK pCallbackFunction, ULONG_PTR ulpFunctionParameter)
-        {
-            HANDLE hThread = OpenThread(THREAD_SET_CONTEXT, FALSE, dwThreadId);
-            if(hThread == NULL)
-            {
-                throw PickupSchedulingFailedException();
-            }
+	class APCPickupPolicy : public PickupPolicyProvider
+	{
+	public:
+		static void scheduleThreadCallback(DWORD dwThreadId, PCALLBACK pCallbackFunction, ULONG_PTR ulpFunctionParameter)
+		{
+			HANDLE hThread = OpenThread(THREAD_SET_CONTEXT, FALSE, dwThreadId);
+			if(hThread == NULL)
+			{
+				throw PickupSchedulingFailedException();
+			}
 
-            BOOL bSuccessful = QueueUserAPC(reinterpret_cast<PAPCFUNC>(pCallbackFunction), hThread, ulpFunctionParameter);
-            CloseHandle(hThread);
-            if(!bSuccessful)
-            {
-                throw PickupSchedulingFailedException();
-            }
-        }
-    };
+			BOOL bSuccessful = QueueUserAPC(reinterpret_cast<PAPCFUNC>(pCallbackFunction), hThread, ulpFunctionParameter);
+			CloseHandle(hThread);
+			if(!bSuccessful)
+			{
+				throw PickupSchedulingFailedException();
+			}
+		}
+	};
 }

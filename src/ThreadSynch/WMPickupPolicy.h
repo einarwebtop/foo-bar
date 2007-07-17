@@ -20,25 +20,25 @@
 
 namespace ThreadSynch
 {
-    template<unsigned int WindowMessageId>
-    class WMPickupPolicy : public PickupPolicyProvider
-    {
-    public:
-        static const unsigned int WM_PICKUP = WindowMessageId;
+	template<unsigned int WindowMessageId>
+	class WMPickupPolicy : public PickupPolicyProvider
+	{
+	public:
+		static const unsigned int WM_PICKUP = WindowMessageId;
 
-        static void scheduleThreadCallback(DWORD dwThreadId, PCALLBACK pCallbackFunction, ULONG_PTR ulpFunctionParameter)
-        {
-            if(!PostThreadMessage(dwThreadId, WM_PICKUP, reinterpret_cast<WPARAM>(pCallbackFunction), static_cast<LPARAM>(ulpFunctionParameter)))
-            {
-                throw PickupSchedulingFailedException();
-            }
-        }
+		static void scheduleThreadCallback(DWORD dwThreadId, PCALLBACK pCallbackFunction, ULONG_PTR ulpFunctionParameter)
+		{
+			if(!PostThreadMessage(dwThreadId, WM_PICKUP, reinterpret_cast<WPARAM>(pCallbackFunction), static_cast<LPARAM>(ulpFunctionParameter)))
+			{
+				throw PickupSchedulingFailedException();
+			}
+		}
 
-        static void executeCallback(WPARAM wParam, LPARAM lParam)
-        {
-            PCALLBACK pCallbackFunction = reinterpret_cast<PCALLBACK>(wParam);
-            ULONG_PTR ulpFunctionParameter = static_cast<ULONG_PTR>(lParam);
-            pCallbackFunction(ulpFunctionParameter);
-        }
-    };
+		static void executeCallback(WPARAM wParam, LPARAM lParam)
+		{
+			PCALLBACK pCallbackFunction = reinterpret_cast<PCALLBACK>(wParam);
+			ULONG_PTR ulpFunctionParameter = static_cast<ULONG_PTR>(lParam);
+			pCallbackFunction(ulpFunctionParameter);
+		}
+	};
 }

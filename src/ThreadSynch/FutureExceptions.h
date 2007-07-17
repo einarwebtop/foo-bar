@@ -18,21 +18,23 @@
 
 namespace ThreadSynch
 {
-	/************************************************************************
-	** Exceptions
-	*/
+    /************************************************************************
+    ** Exceptions
+    */
 
-	/*!@class PickupSchedulingFailedException
-	** @brief thrown when a pickup policy fails.
-	*/
-	class PickupSchedulingFailedException : public std::exception
-	{
-	public:
-		PickupSchedulingFailedException()
-		{}
+    /*!@class FutureValuePending
+    ** @brief thrown when Future::getValue is called on a Future object which has not yet been computed.
+    ** @remark
+    **   Todo: Improve on the base exception class, to provide better message passing options
+    */
+    class FutureValuePending : public std::exception
+    {
+    public:
+        FutureValuePending()
+        {}
 
-		PickupSchedulingFailedException(const char *const& _What)
-			: std::exception(_What)
-		{}
-	};
+        FutureValuePending(const char *const& _What)
+            : std::exception(_What)
+        {}
+    };
 }

@@ -18,46 +18,46 @@
 
 namespace ThreadSynch
 {
-    namespace details
-    {
-        /*!
-        ** @brief A function which throws an exception object with an attached on-cleanup functor.
-        ** @param[in] orig the exception object to be thrown.
-        ** @param[in] onDeathFunctor a functor, with return type void and no parameters, which will be
-        **   executed when the exception object is destroyed.
-        ** @remark
-        **   The function will create a dummy class which wraps the exception object to be thrown.
-        **   When the exception object is free'd, which is usually when the catch block is completed, 
-        **   the functor will be executed.
-        */
-        template<class T>
-        void throwHooked(const T& orig, boost::function<void()>& onDeathFunctor)
-        {
-            #pragma warning(push)
-            #pragma warning(disable: 4512)
-            class ExHook : public T
-            {
-            public:
-                ExHook(const T& other, const boost::function<void()>& onDeathFunctor) 
-                    : T(other), 
-                      m_onDeathFunctor(onDeathFunctor) 
-                {}
+	namespace details
+	{
+		/*!
+		** @brief A function which throws an exception object with an attached on-cleanup functor.
+		** @param[in] orig the exception object to be thrown.
+		** @param[in] onDeathFunctor a functor, with return type void and no parameters, which will be
+		**   executed when the exception object is destroyed.
+		** @remark
+		**   The function will create a dummy class which wraps the exception object to be thrown.
+		**   When the exception object is free'd, which is usually when the catch block is completed, 
+		**   the functor will be executed.
+		*/
+		template<class T>
+		void throwHooked(const T& orig, boost::function<void()>& onDeathFunctor)
+		{
+			#pragma warning(push)
+			#pragma warning(disable: 4512)
+			class ExHook : public T
+			{
+			public:
+				ExHook(const T& other, const boost::function<void()>& onDeathFunctor) 
+					: T(other), 
+					  m_onDeathFunctor(onDeathFunctor) 
+				{}
 
-                ExHook(const ExHook& other) 
-                    : T(other),
-                      m_onDeathFunctor(other.m_onDeathFunctor) 
-                {}
+				ExHook(const ExHook& other) 
+					: T(other),
+					  m_onDeathFunctor(other.m_onDeathFunctor) 
+				{}
 
-                ~ExHook() 
-                { m_onDeathFunctor(); }
+				~ExHook() 
+				{ m_onDeathFunctor(); }
 
-            private:
-                const boost::function<void()> m_onDeathFunctor;
-            };
-            #pragma warning(pop)
+			private:
+				const boost::function<void()> m_onDeathFunctor;
+			};
+			#pragma warning(pop)
 
-            throw ExHook(orig, onDeathFunctor);
-        }
+			throw ExHook(orig, onDeathFunctor);
+		}
 
-    }
+	}
 }

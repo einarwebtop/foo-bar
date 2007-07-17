@@ -1,10 +1,15 @@
-	July 15th, 2007 (0.7.3):
-		* Fixed scoped_lock bug in CallScheduler, which could have caused undefined behavior upon a call timeout.
-		* Fixed CallHandler destructor, which failed to cleanup exception expecter instance (the effect was a minor memory leak).
-		* Fixed scoped_try_lock loop to correctly iterate already locked CallHandlers in CallScheduler::getNextCallFromQueue.
-	March 13th, 2007 (0.7.2): 
-		* Fixed some minor problems in the CallScheduler::syncCall templates.
-		* Renamed the demo projects
-		* Added a unit test project, with some initial test cases
-	December 13th, 2006 (0.7.1): Fixed missing destructor for FunctorRetvalBinder.
-	December 10th, 2006 (0.7.0): Initial public release.
+December 13th, 2006 (0.7.1): 
+    * Fixed missing destructor for FunctorRetvalBinder.
+
+December 10th, 2006 (0.7.0): 
+    * Initial public release.
+
+March 13th, 2007 (0.7.2): 
+	* Fixed some minor problems in the CallScheduler::syncCall templates.
+	* Renamed the demo projects
+	* Added a unit test project, with some initial test cases
+	
+July 15th, 2007 (0.7.3):
+    * Fixed scoped_lock bug in CallScheduler, which could have caused undefined behavior upon a call timeout.
+    * Fixed CallHandler destructor, which failed to cleanup exception expecter instance (the effect was a minor memory leak).
+    * Fixed scoped_try_lock loop to correctly iterate already locked CallHandlers in CallScheduler::getNextCallFromQueue.
