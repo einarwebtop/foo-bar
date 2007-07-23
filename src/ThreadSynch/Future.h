@@ -82,4 +82,54 @@ namespace ThreadSynch
         boost::shared_ptr<Future_Impl<T>> m_pFutureImpl;
         Future& operator=(const Future& other); // Not implemented
     };
+
+    template<>
+    class Future<void>
+    {
+    public:
+        /*! 
+        ** @brief Constructs a new instance of the Future template, capable of holding a value of inner type T.
+        ** @warning The inner type cannot be of pointer or reference type. This restriction is imposed as an attempt to
+        **          prevent the return value to share resources with other threads. It is, of course, not a fool proof
+        **          guard, so be vary.
+        ** @param[in] abortCallback a callback to a function which aborts the computation of the future variable.
+        ** @param[in] waitCallback a callback which waits a number of milliseconds for the computation to take place.
+        ** @param[in] getReturnValueCallback a callback which returns the computed future variable.
+        ** @throw std::bad_alloc The inner Future_Impl could not be allocated.
+        */
+        Future(Future_Impl<void>::ABORTCALLBACKTYPE abortCallback,
+               Future_Impl<void>::WAITCALLBACKTYPE waitCallback)
+               : m_pFutureImpl(new Future_Impl<void>(abortCallback, waitCallback))
+        {}
+
+        Future(const Future& other)
+            : m_pFutureImpl(other.m_pFutureImpl)
+        {}
+
+        /*! 
+        ** @brief Waits for the future computation to take place.
+        ** @param[in] dwTimeout number of milliseconds to wait before terminating.
+        ** @return the current status of the future computation. 
+        ** @sa ASYNCH_CALL_STATUS
+        */
+        ASYNCH_CALL_STATUS wait(DWORD dwTimeout) const // Never throws
+        {
+            return m_pFutureImpl->wait(dwTimeout);
+        }
+
+        /*! 
+        ** @brief Attempts to abort the computation. If the computation has already started, the call will run till
+        **        completion prior to returning ASYNCH_CALL_COMPLETE.
+        ** @return the current status of the future computation. 
+        ** @sa ASYNCH_CALL_STATUS
+        */
+        ASYNCH_CALL_STATUS abort() const // May throw
+        {
+            return m_pFutureImpl->abort();
+        }
+
+    private:
+        boost::shared_ptr<Future_Impl<void>> m_pFutureImpl;
+        Future& operator=(const Future& other); // Not implemented
+    };
 }

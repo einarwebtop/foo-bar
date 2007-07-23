@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <boost/mpl/is_sequence.hpp>
+#include <boost/mpl/or.hpp>
+#include <boost/mpl/and.hpp>
 #include "CallHandler.h"
 #include "PickupPolicyProvider.h"
 #include "CallSchedulerExceptions.h"
@@ -23,20 +26,37 @@
 
 namespace ThreadSynch
 {
-	#define ExceptionTypes boost::mpl::vector
+    /************************************************************************
+    ** Definitions
+    */
+	
+    #define ExceptionTypes boost::mpl::vector
+
+    #define IS_VOID_OR_SEQUENCE(x)\
+        boost::mpl::or_                 \
+        <                               \
+            boost::is_void<x>,          \
+            boost::mpl::is_sequence<x>  \
+        > /*****************************/
+
+    #define X_IS_VOID_AND_Y_IS_SEQUENCE(x, y)\
+        boost::mpl::and_                \
+        <                               \
+            boost::is_void<x>,          \
+            boost::mpl::is_sequence<y>  \
+        > /*****************************/
+
+    #define X_IS_NON_VOID_AND_Y_IS_SEQUENCE(x, y)\
+        boost::mpl::and_                         \
+        <                                        \
+            boost::mpl::not_<boost::is_void<x>>, \
+            boost::mpl::is_sequence<y>           \
+        > /**************************************/
 
 	/*!@class CallScheduler
 	** @brief A singleton class which enables a user to schedule calls across threads
 	** The PickupPolicy template parameter will decide how notifications are transported
 	** between the threads.
-	** @remark
-	**   Todo:
-	**	   - Possible tune-up: 
-	**	     Keep one lock per queue, in addition to one for all queues. 
-	**		 The call structure may become slow in case of many
-	**	     simultaneous and quick routines being called cross threads, in which
-	**	     case the queue mutex will lock and unlock quite rapidly.
-	**     - Deal with TLS return values and parameters, if possible.
 	*/
 	template<class PickupPolicy>
 	class CallScheduler
@@ -52,63 +72,109 @@ namespace ThreadSynch
 		static CallScheduler* getInstance();
 
 		/*! 
-		** @brief The function which schedules calls to be made across threads, and expects a few exceptions might be thrown.
-		** @warning Don't specify "void" for ReturnValueType. Call syncCall() or syncCall<ExceptionTypes<>> instead.
+		** @brief schedules calls to be made across threads, and expects a few exceptions might be thrown.
 		** @param[in] dwThreadId the id of the thread to make the call in.
 		** @param[in] callback functor which executes the callback.
 		** @param[in] dwTimeout number of milliseconds to wait before terminating.
-		** @param[in] ReturnValueType return value, usually deduced from the boost function.
+		** @param[in] ReturnValueType return value, usually deduced, but specify to avoid possibly cryptic errors.
 		** @param[in] Exceptions expected exceptions, specified as a comma separated template parameters to ExceptionTypes.
 		** @return the returned value from the synchronized call.
 		*/
-		template<typename ReturnValueType, class Exceptions>
-		ReturnValueType syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout);
+        template<typename ReturnValueType, class Exceptions>
+        typename boost::disable_if<IS_VOID_OR_SEQUENCE(ReturnValueType), ReturnValueType>::
+        type syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout);
 
 		/*! 
-		** @brief The function which schedules calls to be made across threads.
-		** @warning Don't specify "void" for ReturnValueType. Call syncCall() or syncCall<ExceptionTypes<>> instead.
+		** @brief schedules calls to be made across threads, and expects a few exceptions might be thrown.
 		** @param[in] dwThreadId the id of the thread to make the call in.
 		** @param[in] callback functor which executes the callback.
 		** @param[in] dwTimeout number of milliseconds to wait before terminating.
-		** @param[in] ReturnValueType return value, usually deduced from the boost function.
-		** @return the returned value from the synchronized call.
+        ** @param[in] ReturnValueType return value, usually deduced, but specify to avoid possibly cryptic errors.
+        ** @param[in] Exceptions expected exceptions, specified as a comma separated template parameters to ExceptionTypes.
 		*/
-		template<typename ReturnValueType>
-		ReturnValueType syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout);
+        template<typename ReturnValueType, class Exceptions>
+        typename boost::enable_if<boost::is_void<ReturnValueType>, ReturnValueType>::
+        type syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout);
 
-		/*! 
-		** @brief The function which schedules calls to be made across threads, and expects a few exceptions might be thrown.
-		** @param[in] dwThreadId the id of the thread to make the call in.
-		** @param[in] callback functor which executes the callback.
-		** @param[in] dwTimeout number of milliseconds to wait before terminating.
-		** @param[in] Exceptions expected exceptions, specified as a comma separated template parameters to ExceptionTypes.
-		** @note This function serves synchronized calls with no (void) return value.
-		*/
-		template<class Exceptions>
-		void syncCall(DWORD dwThreadId, boost::function<void()> callback, DWORD dwTimeout);
+#pragma region syncCall template parameter redirections
+        // ReturnValueType IS NOT void AND ReturnValueType IS NOT MPL Sequence redirection
+        template<typename ReturnValueType>
+        typename boost::disable_if<IS_VOID_OR_SEQUENCE(ReturnValueType), ReturnValueType>::
+        type syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout)
+        {
+            return syncCall<ReturnValueType, ExceptionTypes<>>(dwThreadId, callback, dwTimeout);
+        }
 
-		/*! 
-		** @brief The function which schedules calls to be made across threads.
-		** @param[in] dwThreadId the id of the thread to make the call in.
-		** @param[in] callback functor which executes the callback.
-		** @param[in] dwTimeout number of milliseconds to wait before terminating.
-		** @note This function serves synchronized calls with no (void) return value.
-		*/
-		void syncCall(DWORD dwThreadId, boost::function<void()> callback, DWORD dwTimeout);
+        // ReturnValueType IS void redirection
+        template<typename ReturnValueType>
+        typename boost::enable_if<boost::is_void<ReturnValueType>, ReturnValueType>::
+        type syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout)
+        {
+            syncCall<ReturnValueType, ExceptionTypes<>>(dwThreadId, callback, dwTimeout);
+        }
+
+        // ReturnValueType IS NOT void AND Exceptions IS Sequence redirection
+        template<typename Exceptions, typename ReturnValueType>
+        typename boost::enable_if<X_IS_NON_VOID_AND_Y_IS_SEQUENCE(ReturnValueType, Exceptions), ReturnValueType>::
+            type syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout)
+        {
+            return syncCall<ReturnValueType, Exceptions>(dwThreadId, callback, dwTimeout);
+        }
+
+        // ReturnValueType IS void AND Exceptions IS Sequence redirection
+        template<typename Exceptions, typename ReturnValueType>
+        typename boost::enable_if<X_IS_VOID_AND_Y_IS_SEQUENCE(ReturnValueType, Exceptions), ReturnValueType>::
+        type syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout)
+        {
+            syncCall<ReturnValueType, Exceptions>(dwThreadId, callback, dwTimeout);
+        }
+#pragma endregion
 
         /*! 
-        ** @brief The function which schedules calls to be made across threads, and expects a few exceptions might be thrown.
-        ** @warning Don't specify "void" for ReturnValueType. Call asyncCall() or asyncCall<ExceptionTypes<>> instead.
+        ** @brief schedules calls to be made across threads, and expects a few exceptions might be thrown.
         ** @param[in] dwThreadId the id of the thread to make the call in.
         ** @param[in] callback functor which executes the callback.
-        ** @param[in] ReturnValueType return value, usually deduced from the boost function.
+        ** @param[in] ReturnValueType return value type. This template overload handles non-void types.
         ** @param[in] Exceptions expected exceptions, specified as a comma separated template parameters to ExceptionTypes.
         ** @return a Future-object which will hold the result of the async call, and also enables early aborts / waits.
         ** @sa Future
         ** @throw std::bad_alloc if the Future object cannot be created
         */
         template<typename ReturnValueType, class Exceptions>
-        Future<ReturnValueType> asyncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback);
+        typename boost::disable_if<IS_VOID_OR_SEQUENCE(ReturnValueType), Future<ReturnValueType>>::
+        type asyncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback);
+
+        /*! 
+        ** @brief schedules calls to be made across threads, and expects a few exceptions might be thrown.
+        ** @param[in] dwThreadId the id of the thread to make the call in.
+        ** @param[in] callback functor which executes the callback.
+        ** @param[in] ReturnValueType return value type. This template overload handles the void type only.
+        ** @param[in] Exceptions expected exceptions, specified as a comma separated template parameters to ExceptionTypes.
+        ** @return a Future-object which will hold the result of the async call, and also enables early aborts / waits.
+        ** @sa Future
+        ** @throw std::bad_alloc if the Future object cannot be created
+        */
+        template<typename ReturnValueType, class Exceptions>
+        typename boost::enable_if<boost::is_void<ReturnValueType>, Future<ReturnValueType>>::
+        type asyncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback);
+
+#pragma region asyncCall template parameter redirections
+        // ReturnValueType IS NOT MPL Sequence redirection
+        template<typename ReturnValueType>
+        typename boost::disable_if<boost::mpl::is_sequence<ReturnValueType>, Future<ReturnValueType>>::
+        type asyncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback)
+        {
+            return asyncCall<ReturnValueType, ExceptionTypes<>>(dwThreadId, callback);
+        }
+
+        // Exceptions IS MPL Sequence redirection
+        template<typename Exceptions, typename ReturnValueType>
+        typename boost::enable_if<boost::mpl::is_sequence<Exceptions>, Future<ReturnValueType>>::
+        type asyncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback)
+        {
+            return asyncCall<ReturnValueType, Exceptions>(dwThreadId, callback);
+        }
+#pragma endregion
 
 		/*! 
 		** @brief Executes all scheduled calls for the current thread.
@@ -157,7 +223,20 @@ namespace ThreadSynch
 		*/
 		const CallScheduler& operator =(const CallScheduler&); // not implemented
 
+        /*!
+        ** @brief callback for asynchronous Future objects, which aborts a scheduled call
+        ** @param[in] dwThreadId the id of the thread the Asynchronous call will execute on
+        ** @param[in] pCallHandler smart pointer to a CallHandler
+        ** @remark If the call has already begun, this function will wait for it to end.
+        ** @throw ... Any exceptions thrown during the execution of a started call will be thrown.
+        */
         ASYNCH_CALL_STATUS abortAsyncCall(DWORD dwThreadId, boost::shared_ptr<CallHandler> pCallHandler);
+        
+        /*!
+        ** @brief callback for asynchronous Future objects, which causes the thread to wait for the started call to complete.
+        ** @param[in] pCallHandler smart pointer to a CallHandler
+        ** @param[in] dwTimeout the number of milliseconds to wait for the call to complete. Specify INFINITE to wait without timeouts.
+        */
         ASYNCH_CALL_STATUS waitAsyncCall(boost::shared_ptr<CallHandler> pCallHandler, DWORD dwTimeout);
 
 		/*! 
@@ -180,9 +259,9 @@ namespace ThreadSynch
 		** @param[in] pCallHandlerLock a lock object, which has locked a resource in the CallHandler for simultaneous access.
 		** @return The next scheduled CallHandler.
 		*/
-        CallHandler* getNextCallFromQueue(DWORD dwThreadId, boost::shared_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock);
+        CallHandler* getNextCallFromQueue(DWORD dwThreadId, boost::scoped_ptr<boost::try_mutex::scoped_try_lock>& pCallHandlerLock);
 
-		/*!
+        /*!
 		** @brief Callback for CallHandler's rethrow mechanism
 		** @remark
 		**   Will be called by the throwHooked wrapper when a re-thrown exception has been destroyed.
@@ -194,7 +273,7 @@ namespace ThreadSynch
         /*! 
         ** @brief Internal helper function shared between the different syncCall flavors
         */
-        void processSynchronousCallHandler(DWORD dwThreadId, CallHandler* pCallHandler, DWORD dwTimeout, boost::shared_ptr<boost::try_mutex::scoped_lock> pCallHandlerLock);
+        void processSynchronousCallHandler(DWORD dwThreadId, CallHandler* pCallHandler, DWORD dwTimeout, boost::scoped_ptr<boost::try_mutex::scoped_lock>& pCallHandlerLock);
 
         /*! 
         ** @brief Internal helper function shared between the different asyncCall flavors
@@ -226,16 +305,17 @@ namespace ThreadSynch
 
 #pragma warning(push)
 #pragma warning(disable: 4715)
-	template<class PickupPolicy>
-	template<typename ReturnValueType, typename Exceptions>
-	ReturnValueType CallScheduler<PickupPolicy>::syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout)
-	{
+    template<class PickupPolicy>
+    template<typename ReturnValueType, class Exceptions>
+    typename boost::disable_if<IS_VOID_OR_SEQUENCE(ReturnValueType), ReturnValueType>::
+    type CallScheduler<PickupPolicy>::syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout)
+    {
 		boost::shared_ptr<CallHandler> pCallHandler(new CallHandler());
 
 		// Initialize the container which holds the call to be done by the target thread
 		pCallHandler->setCallFunctor<ReturnValueType, Exceptions>(callback);
 
-        boost::shared_ptr<boost::try_mutex::scoped_lock> pCallHandlerLock;
+        boost::scoped_ptr<boost::try_mutex::scoped_lock> pCallHandlerLock;
 		// Process the call handler, and add it to the queue
 		processSynchronousCallHandler(dwThreadId, pCallHandler.get(), dwTimeout, pCallHandlerLock);
 
@@ -263,23 +343,17 @@ namespace ThreadSynch
 	}
 #pragma warning(pop)
 
-	template<class PickupPolicy>
-	template<typename ReturnValueType>
-	ReturnValueType CallScheduler<PickupPolicy>::syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout)
-	{
-		return syncCall<ReturnValueType, boost::mpl::vector<>>(dwThreadId, callback, dwTimeout);
-	}
-
-	template<class PickupPolicy>
-	template<typename Exceptions>
-	void CallScheduler<PickupPolicy>::syncCall(DWORD dwThreadId, boost::function<void()> callback, DWORD dwTimeout)
+    template<class PickupPolicy>
+    template<typename ReturnValueType, class Exceptions>
+    typename boost::enable_if<boost::is_void<ReturnValueType>, ReturnValueType>::
+    type CallScheduler<PickupPolicy>::syncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback, DWORD dwTimeout)
 	{
 		boost::shared_ptr<CallHandler> pCallHandler(new CallHandler());
 
 		// Initialize the container which holds the call to be done by the target thread
-		pCallHandler->setCallFunctor<Exceptions>(callback);
+		pCallHandler->setCallFunctor<ReturnValueType, Exceptions>(callback);
 
-        boost::shared_ptr<boost::try_mutex::scoped_lock> pCallHandlerLock;
+        boost::scoped_ptr<boost::try_mutex::scoped_lock> pCallHandlerLock;
 		// Process the call handler, and add it to the queue
 		processSynchronousCallHandler(dwThreadId, pCallHandler.get(), dwTimeout, pCallHandlerLock);
 
@@ -306,15 +380,10 @@ namespace ThreadSynch
         }
 	}
 
-	template<class PickupPolicy>
-	void CallScheduler<PickupPolicy>::syncCall(DWORD dwThreadId, boost::function<void()> callback, DWORD dwTimeout)
-	{
-		syncCall<boost::mpl::vector<>>(dwThreadId, callback, dwTimeout);
-	}
-
     template<class PickupPolicy>
     template<typename ReturnValueType, class Exceptions>
-    Future<ReturnValueType> CallScheduler<PickupPolicy>::asyncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback)
+    typename boost::disable_if<IS_VOID_OR_SEQUENCE(ReturnValueType), Future<ReturnValueType>>::
+    type CallScheduler<PickupPolicy>::asyncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback)
     {
         boost::shared_ptr<CallHandler> pCallHandler(new CallHandler());
 
@@ -335,15 +404,39 @@ namespace ThreadSynch
     }
 
     template<class PickupPolicy>
+    template<typename ReturnValueType, class Exceptions>
+    typename boost::enable_if<boost::is_void<ReturnValueType>, Future<ReturnValueType>>::
+    type CallScheduler<PickupPolicy>::asyncCall(DWORD dwThreadId, boost::function<ReturnValueType()> callback)
+    {
+        boost::shared_ptr<CallHandler> pCallHandler(new CallHandler());
+
+        // The Future construction can possibly throw (specifically a std::bad_alloc), so the construction must be done prior to
+        // the CallHandler being added to the queue. Should an exception be thrown, pCallHandler will clean itself, and nothing
+        // else will have gone wrong.
+        Future<ReturnValueType> futureObject = Future<ReturnValueType>(boost::bind(&CallScheduler<PickupPolicy>::abortAsyncCall, this, dwThreadId, pCallHandler),
+                                                                       boost::bind(&CallScheduler<PickupPolicy>::waitAsyncCall, this, pCallHandler, _1));
+
+        // Initialize the container which holds the call to be done by the target thread
+        pCallHandler->setCallFunctor<ReturnValueType, Exceptions>(callback);
+
+        // Add the handler to the queue
+        preProcessAsynchronousCallHandler(dwThreadId, pCallHandler.get());
+
+        return futureObject;
+    }
+
+    template<class PickupPolicy>
 	CallScheduler<PickupPolicy>::CallScheduler()
 	{
         /* Empty CTOR */
 	}
 
+#pragma warning(push)
+#pragma warning(disable: 4715)
     template<class PickupPolicy>
     ASYNCH_CALL_STATUS CallScheduler<PickupPolicy>::abortAsyncCall(DWORD dwThreadId, boost::shared_ptr<CallHandler> pCallHandler)
     {
-        boost::shared_ptr<boost::try_mutex::scoped_lock> pCallHandlerLock;
+        boost::scoped_ptr<boost::try_mutex::scoped_lock> pCallHandlerLock;
         // Attempt to obtain a lock on the CallHandler
         pCallHandlerLock.reset(new boost::try_mutex::scoped_lock(*pCallHandler->getAccessMutex()));
 
@@ -369,6 +462,7 @@ namespace ThreadSynch
             return ASYNCH_CALL_ABORTED;
         }
     }
+#pragma warning(pop)
 
     template<class PickupPolicy>
     ASYNCH_CALL_STATUS CallScheduler<PickupPolicy>::waitAsyncCall(boost::shared_ptr<CallHandler> pCallHandler, DWORD dwTimeout)
@@ -445,7 +539,7 @@ namespace ThreadSynch
 	}
 
 	template<class PickupPolicy>
-    CallHandler* CallScheduler<PickupPolicy>::getNextCallFromQueue(DWORD dwThreadId, boost::shared_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock)
+    CallHandler* CallScheduler<PickupPolicy>::getNextCallFromQueue(DWORD dwThreadId, boost::scoped_ptr<boost::try_mutex::scoped_try_lock>& pCallHandlerLock)
 	{
 		// Acquire a lock on the thread queue
 		boost::mutex::scoped_lock lock(m_threadQueueMutex);
@@ -494,7 +588,7 @@ namespace ThreadSynch
 	{
 		DWORD dwThreadId = GetCurrentThreadId();
         CallHandler* pCallHandler;
-		boost::shared_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock;
+        boost::scoped_ptr<boost::try_mutex::scoped_try_lock> pCallHandlerLock;
 
 		while((pCallHandler = pSchedulerInstance->getNextCallFromQueue(dwThreadId, pCallHandlerLock)) != NULL)
 		{
@@ -507,7 +601,7 @@ namespace ThreadSynch
 	}
 
     template<class PickupPolicy>
-    void CallScheduler<PickupPolicy>::processSynchronousCallHandler(DWORD dwThreadId, CallHandler* pCallHandler, DWORD dwTimeout, boost::shared_ptr<boost::try_mutex::scoped_lock> pCallHandlerLock)
+    void CallScheduler<PickupPolicy>::processSynchronousCallHandler(DWORD dwThreadId, CallHandler* pCallHandler, DWORD dwTimeout, boost::scoped_ptr<boost::try_mutex::scoped_lock>& pCallHandlerLock)
     {
         try
         {

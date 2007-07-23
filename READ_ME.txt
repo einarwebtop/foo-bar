@@ -1,6 +1,4 @@
-ThreadSynch v0.7.4a, July 15th, 2007
-
-NOTE: THIS IS AN ALPHA RELEASE. TEST USE ONLY.
+ThreadSynch v0.8.0, July 18th, 2007
 
 The library can be found at http://threadsynch.googlecode.com
 The authors blog can be found at http://einaros.blogspot.com

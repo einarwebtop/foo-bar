@@ -133,7 +133,7 @@ DWORD WINAPI demoWorkerThread(PVOID)
 		// data owned by this worker thread
 		/* ... */
 
-		Sleep(100);
+		Sleep(10);
 	}
 }
 
@@ -149,7 +149,7 @@ void updateText(const string& textToAdd)
 		// though several calls may make it here at the same time
 		// (as mentioned above), the real body of this function will
 		// be serialized.
-		g_callScheduler->syncCall(g_dwGuiThread, boost::bind(updateText, boost::ref(textToAdd)), 500);
+		g_callScheduler->syncCall<void>(g_dwGuiThread, boost::bind(updateText, boost::ref(textToAdd)), 500);
 		return;
 	}
 

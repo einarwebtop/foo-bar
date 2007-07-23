@@ -13,3 +13,9 @@ July 15th, 2007 (0.7.3):
     * Fixed scoped_lock bug in CallScheduler, which could have caused undefined behavior upon a call timeout.
     * Fixed CallHandler destructor, which failed to cleanup exception expecter instance (the effect was a minor memory leak).
     * Fixed scoped_try_lock loop to correctly iterate already locked CallHandlers in CallScheduler::getNextCallFromQueue.
+    
+July 18th, 2007 (0.8.0):
+    * Added asynchronous cross thread calls: CallScheduler::asyncCall.
+    * Updated CallHandler to use boost::enable_if / disable_if to handle void overloads.
+    * Updated unit tests to cover pre-call aborts.
+    * Updated unit test project to use Boost's "Unit Test Execution Monitor".

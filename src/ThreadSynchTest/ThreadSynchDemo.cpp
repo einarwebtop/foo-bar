@@ -34,7 +34,7 @@ HANDLE hExternalEvent;
 char globalBuffer[20];
 
 // Dummy exception object
-class demoException
+class DemoException
 {};
 
 // Entry point
@@ -53,7 +53,7 @@ int _tmain()
 **
 ** demoFunction returned: aaaaaaaaaaaaaaaaaaa
 ** demoVoidFunction called with c='a'
-** The scheduled call threw a demoException
+** The scheduled call threw a DemoException
 **
 ********************************************************************************/
 
@@ -92,8 +92,8 @@ void rundemos()
 	// Do a second cross thread call, to a function returning nothing
 	try
 	{
-		// Expect a std::exception or demoException
-		scheduler->syncCall<ExceptionTypes<std::exception, demoException>>(dwThreadId, boost::bind(demoVoidFunction, 'a'), 500);
+		// Expect a std::exception or DemoException
+		scheduler->syncCall<void, ExceptionTypes<std::exception, DemoException>>(dwThreadId, boost::bind(demoVoidFunction, 'a'), 500);
 	}
 	catch(CallTimeoutException&)
 	{
@@ -107,16 +107,16 @@ void rundemos()
 	{
 		cout << "demoVoidFunction threw a std exception: " << e.what() << endl;
 	}
-	catch(demoException&)
+	catch(DemoException&)
 	{
-		cout << "demoVoidFunction threw a demoException" << endl;
+		cout << "demoVoidFunction threw a DemoException" << endl;
 	}
 
     // Do a third cross thread call, to a function returning an int
     try
     {
-        // Expect a std::exception or demoException
-        int demoInt = scheduler->syncCall<int, ExceptionTypes<std::exception, demoException>>(dwThreadId, boost::bind(demoIntFunction, '!'), 500);
+        // Expect a std::exception or DemoException
+        int demoInt = scheduler->syncCall<int, ExceptionTypes<std::exception, DemoException>>(dwThreadId, boost::bind(demoIntFunction, '!'), 500);
         cout << "demoIntFunction returned: " << demoInt << endl;
     }
     catch(CallTimeoutException&)
@@ -131,16 +131,25 @@ void rundemos()
     {
         cout << "demoIntFunction threw a std exception: " << e.what() << endl;
     }
-    catch(demoException&)
+    catch(DemoException&)
     {
-        cout << "demoIntFunction threw a demoException" << endl;
+        cout << "demoIntFunction threw a DemoException" << endl;
     }
 
     // Do a fourth cross thread call, to a function returning an int
     try
     {
-        // Expect a std::exception or demoException
-        Future<int> futureDemoInt = scheduler->asyncCall<int, ExceptionTypes<std::exception, demoException>>(dwThreadId, boost::bind(demoIntFunctionDelayed, '!'));
+        boost::function<int()> f = boost::bind(demoIntFunctionDelayed, '!');
+        Future<int> futureDemoInt = scheduler->asyncCall<ExceptionTypes<DemoException, std::exception>>(dwThreadId, f);
+        
+        //Future<int> futureDemoInt2 = scheduler->asyncCall<ExceptionTypes<DemoException, std::exception>>(dwThreadId, boost::bind(demoIntFunctionDelayed, '!'));
+        Future<void> futureDemoInt3 = scheduler->asyncCall<void>(dwThreadId, boost::bind(demoIntFunctionDelayed, '?'));
+        Future<int> futureDemoInt4 = scheduler->asyncCall<int>(dwThreadId, boost::bind(demoIntFunctionDelayed, '!'));
+        Future<int> futureDemoInt5 = scheduler->asyncCall<int, ExceptionTypes<DemoException>>(dwThreadId, boost::bind(demoIntFunctionDelayed, '!'));
+        Future<void> futureDemoInt6 = scheduler->asyncCall<void, ExceptionTypes<DemoException>>(dwThreadId, boost::bind(demoIntFunctionDelayed, '!'));
+        Future<void> futureDemoInt7 = scheduler->asyncCall<ExceptionTypes<DemoException>, void>(dwThreadId, boost::bind(demoIntFunctionDelayed, '!'));
+        Future<int> futureDemoInt8 = scheduler->asyncCall<ExceptionTypes<DemoException>, int>(dwThreadId, boost::bind(demoIntFunctionDelayed, '!'));
+
         while(futureDemoInt.wait(10) == ASYNCH_CALL_PENDING)
         {
             cout << "Still waiting ..." << endl;
@@ -150,14 +159,6 @@ void rundemos()
     catch(CallSchedulingFailedException&)
     {
         cout << "Call scheduling failed -- Probably a broken pickup policy." << endl;
-    }
-    catch(std::exception& e)
-    {
-        cout << "demoIntFunctionDelayed threw a std exception: " << e.what() << endl;
-    }
-    catch(demoException&)
-    {
-        cout << "demoIntFunctionDelayed threw a demoException" << endl;
     }
 
 	// Cleanup
@@ -192,7 +193,7 @@ void demoVoidFunction(char c)
 {
 	cout << "demoVoidFunction called with c='" << c << "'" << endl;
 	//throw std::exception("demoing, demoing"); // Uncomment to transport exception back to the main thread
-	throw demoException();
+	throw DemoException();
 }
 
 // A demo function to be called from the secondary thread

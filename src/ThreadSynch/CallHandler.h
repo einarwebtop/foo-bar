@@ -47,11 +47,10 @@ namespace ThreadSynch
 		** @remarks 
 		**   All functor parameters must be bound with boost::bind.
 		*/
-		template<typename T, class E>
-		void setCallFunctor(boost::function<T()> func);
-
-		template<class E>
-		void setCallFunctor(boost::function<void()> func);
+        template<typename T, class E>
+        typename boost::disable_if<boost::is_void<T>>::type setCallFunctor(boost::function<T()> func);
+        template<typename T, class E>
+        typename boost::enable_if<boost::is_void<T>>::type setCallFunctor(boost::function<T()> func);
 
 		/*! 
 		** @brief Waits for completion
@@ -114,7 +113,7 @@ namespace ThreadSynch
 		** @return The return value as stored by the call.
 		*/
 		template<typename T>
-		inline T getReturnValue() const
+		inline typename boost::disable_if<boost::is_void<T>, T>::type getReturnValue() const
 		{
 			return *reinterpret_cast<T*>(m_pReturnValue.get());
 		}
@@ -222,7 +221,7 @@ namespace ThreadSynch
 			m_freeRetvalBinder();
 		}
 
-		//// Deallocate the exeception expecter, if one is set
+		// Deallocate the exception expecter, if one is set
 		if(m_freeExceptionExpecter)
 		{
 			m_freeExceptionExpecter();
@@ -230,7 +229,7 @@ namespace ThreadSynch
 	}
 
 	template<typename T, class E>
-	void CallHandler::setCallFunctor(boost::function<T()> func)
+    typename boost::disable_if<boost::is_void<T>>::type CallHandler::setCallFunctor(boost::function<T()> func)
 	{
 		// Disallow multiple runs
 		if(m_bCallFunctorSet)
@@ -259,8 +258,8 @@ namespace ThreadSynch
 									static_cast<boost::function<void()>>(boost::bind(&FunctorRetvalBinder<T>::execute, binder)));
 	}
 
-	template<class E>
-	void CallHandler::setCallFunctor(boost::function<void()> func)
+	template<typename T, class E>
+    typename boost::enable_if<boost::is_void<T>>::type CallHandler::setCallFunctor(boost::function<T()> func)
 	{
 		// Disallow multiple runs
 		if(m_bCallFunctorSet)
@@ -277,14 +276,14 @@ namespace ThreadSynch
 
 		// Create a loose FunctorRetvalBinder instance. The instance will be free'd through the
 		// m_freeRetvalBinder functor, called in the CallHandler destructor.
-		FunctorRetvalBinder<void>* binder = new FunctorRetvalBinder<void>(func, m_pReturnValue.get());
-		m_freeRetvalBinder = boost::bind(&FunctorRetvalBinder<void>::free, binder);
+		FunctorRetvalBinder<T>* binder = new FunctorRetvalBinder<T>(func, m_pReturnValue.get());
+		m_freeRetvalBinder = boost::bind(&FunctorRetvalBinder<T>::free, binder);
 
 		// Setup the main execution functor, which will wrap both expected exceptions and
 		// return value.
 		m_executeCall = boost::bind(&ExceptionExpecter<E>::execute, 
 									expecter, 
-									static_cast<boost::function<void()>>(boost::bind(&FunctorRetvalBinder<void>::execute, binder)));
+									static_cast<boost::function<void()>>(boost::bind(&FunctorRetvalBinder<T>::execute, binder)));
 	}
 
 	void CallHandler::onExceptionExpecterComplete(details::CaughtExceptionType etype)

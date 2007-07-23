@@ -46,6 +46,10 @@ namespace ThreadSynch
         ASYNCH_CALL_ABORTED
     };
 
+    /************************************************************************
+    ** Generic Future_Impl template
+    */
+
     template<typename T>
     class Future_Impl : private boost::noncopyable
     {
@@ -55,13 +59,42 @@ namespace ThreadSynch
         typedef boost::function<T()> GETRETURNVALUECALLBACKTYPE;
 
         Future_Impl(ABORTCALLBACKTYPE abortCallback,
-               WAITCALLBACKTYPE waitCallback,
-               GETRETURNVALUECALLBACKTYPE getReturnValueCallback);  // Never throws
-        ~Future_Impl(); // Never throws
+                    WAITCALLBACKTYPE waitCallback,
+                    GETRETURNVALUECALLBACKTYPE getReturnValueCallback)
+            : m_abortCallback(abortCallback),
+              m_waitCallback(waitCallback),
+              m_getReturnValueCallback(getReturnValueCallback)
+        {
+        }
 
-        ASYNCH_CALL_STATUS wait(DWORD dwTimeout) const; // Never throws
-        ASYNCH_CALL_STATUS abort() const; // May throw
-        T getValue() const; // May throw
+        ~Future_Impl()
+        {
+            try
+            {
+                abort();
+            }
+            catch(...)
+            { /* No exceptions may leave the DTOR */ }
+        }
+
+        ASYNCH_CALL_STATUS wait(DWORD dwTimeout) const
+        {
+            return m_waitCallback(dwTimeout);
+        }
+
+        ASYNCH_CALL_STATUS abort() const
+        {
+            return m_abortCallback();
+        }
+
+        T getValue() const
+        {
+            if(wait(0) != ASYNCH_CALL_COMPLETE)
+            {
+                throw FutureValuePending();
+            }
+            return m_getReturnValueCallback();
+        }
 
     private:
         ABORTCALLBACKTYPE m_abortCallback;
@@ -69,48 +102,57 @@ namespace ThreadSynch
         GETRETURNVALUECALLBACKTYPE m_getReturnValueCallback;
     };
 
-    template<typename T>
-    Future_Impl<T>::Future_Impl(ABORTCALLBACKTYPE abortCallback,
-                      WAITCALLBACKTYPE waitCallback,
-                      GETRETURNVALUECALLBACKTYPE getReturnValueCallback)
-        : m_abortCallback(abortCallback),
-          m_waitCallback(waitCallback),
-          m_getReturnValueCallback(getReturnValueCallback)
-    {
-    }
+    /************************************************************************
+    ** Future_Impl void specialization
+    */
 
-    template<typename T>
-    Future_Impl<T>::~Future_Impl()
+    template<>
+    class Future_Impl<void> : private boost::noncopyable
     {
-        try
+    public:
+        typedef boost::function<ASYNCH_CALL_STATUS()> ABORTCALLBACKTYPE;
+        typedef boost::function<ASYNCH_CALL_STATUS(DWORD)> WAITCALLBACKTYPE;
+
+        Future_Impl(ABORTCALLBACKTYPE abortCallback,
+                    WAITCALLBACKTYPE waitCallback)
+            : m_abortCallback(abortCallback),
+              m_waitCallback(waitCallback)
         {
-            abort();
         }
-        catch(...)
-        { /* No exceptions may leave the DTOR */ }
-    }
 
-    template<typename T>
-    ASYNCH_CALL_STATUS Future_Impl<T>::wait(DWORD dwTimeout) // Never throws
-    {
-        return m_waitCallback(dwTimeout);
-    }
-
-    template<typename T>
-    ASYNCH_CALL_STATUS Future_Impl<T>::abort() // May throw
-    {
-        return m_abortCallback();
-    }
-
-    template<typename T>
-    T Future_Impl<T>::getValue() // May throw
-    {
-        if(wait(0) != ASYNCH_CALL_COMPLETE)
+        ~Future_Impl()
         {
-            throw FutureValuePending();
+            try
+            {
+                abort();
+            }
+            catch(...)
+            { /* No exceptions may leave the DTOR */ }
         }
-        return m_getReturnValueCallback();
-    }
+
+        ASYNCH_CALL_STATUS wait(DWORD dwTimeout) const
+        {
+            return m_waitCallback(dwTimeout);
+        }
+
+        ASYNCH_CALL_STATUS abort() const
+        {
+            return m_abortCallback();
+        }
+
+        void getValue() const
+        {
+            if(wait(0) != ASYNCH_CALL_COMPLETE)
+            {
+                throw FutureValuePending();
+            }
+            /* void handler: returns nothing */
+        }
+
+    private:
+        ABORTCALLBACKTYPE m_abortCallback;
+        WAITCALLBACKTYPE m_waitCallback;
+    };
 
     /************************************************************************
     ** Future_Impl template partial specializations: Pointer and reference types

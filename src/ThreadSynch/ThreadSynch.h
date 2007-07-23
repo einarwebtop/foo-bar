@@ -43,12 +43,13 @@
 #include <boost/bind.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/scoped_array.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/int.hpp>
-#include <boost/preprocessor/repetition/repeat.hpp> 
 #include <boost/mpl/size.hpp>
+#include <boost/preprocessor/repetition/repeat.hpp> 
 #include <boost/type_traits.hpp>
 
 // ThreadSynch headers
