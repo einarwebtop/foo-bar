@@ -45,12 +45,16 @@
 #include <boost/scoped_array.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/preprocessor/repetition/repeat.hpp> 
+#include <boost/type_traits.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/mpl/at.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/size.hpp>
-#include <boost/preprocessor/repetition/repeat.hpp> 
-#include <boost/type_traits.hpp>
+#include <boost/mpl/sort.hpp>
+#include <boost/mpl/placeholders.hpp>
+#include <boost/mpl/not.hpp>
+#include <boost/mpl/next.hpp>
 
 // ThreadSynch headers
 

@@ -39,6 +39,17 @@ using namespace boost::unit_test;
 ** Test helper classes and functions
 */
 
+struct TestException 
+{
+    int magicNumber;
+    TestException(int mn = 0) : magicNumber(mn) {}
+};
+
+struct TestDerivedException : public TestException
+{
+    TestDerivedException(int mn = 0) : TestException(mn) {}
+};
+
 class SharedClass
 {
 public:
@@ -48,25 +59,75 @@ public:
 };
 int SharedClass::refcount = 0;
 
-boost::shared_ptr<SharedClass> crossThreadPtr();
-struct TestException 
-{
-    int magicNumber;
-    TestException(int mn = 0) : magicNumber(mn) {}
-};
-
 HANDLE g_hTestThread;
 HANDLE g_hCloseEvent;
 HANDLE g_hTemporarilySuspendEvent;
 DWORD g_dwThreadId;
 
+void testParametersSynch();
+void testAbortSynch();
+void testExceptionsSynch();
+void testReturnValuesSynch();
+void testParametersAsynch();
+void testAbortAsynch();
+void testExceptionsAsynch();
+void testReturnValuesAsynch();
 DWORD WINAPI testThread(PVOID);
+void makeThrowingCrossCall_DerivedBase();
+void makeThrowingCrossCall_BaseDerived();
+boost::shared_ptr<SharedClass> crossThreadPtr();
 int crossThreadIntValue(int input);
 int crossThreadIntPtr(int* input);
 int crossThreadIntRef(int& input);
 bool isRealException(const TestException& ex);
 void crossThreadException();
 void aborted();
+
+/************************************************************************
+** Test Setup
+*/
+
+struct ThreadSynchTestSuite : test_suite
+{
+    ThreadSynchTestSuite()
+    {
+        g_hCloseEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+        g_hTemporarilySuspendEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+        g_hTestThread = CreateThread(NULL, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(testThread), NULL, 0, &g_dwThreadId);
+
+        // Synchronous test cases
+        add(BOOST_TEST_CASE(&testAbortSynch));
+        add(BOOST_TEST_CASE(&testParametersSynch));
+        add(BOOST_TEST_CASE(&testReturnValuesSynch));
+        add(BOOST_TEST_CASE(&testExceptionsSynch));
+
+        // Asynchronous test cases
+        add(BOOST_TEST_CASE(&testAbortAsynch));
+        add(BOOST_TEST_CASE(&testParametersAsynch));
+        add(BOOST_TEST_CASE(&testReturnValuesAsynch));
+        add(BOOST_TEST_CASE(&testExceptionsAsynch));
+    }
+
+    ~ThreadSynchTestSuite()
+    {
+        SetEvent(g_hCloseEvent);
+        WaitForSingleObject(g_hTestThread, INFINITE);
+        CloseHandle(g_hTestThread);
+        CloseHandle(g_hCloseEvent);
+
+        // Delete the singleton, for the sake of leak detection.
+        // Some globals will however be detected either way, so don't be alarmed by the notification for the time being.
+        // The key point is: The leak doesn't grow.
+        delete ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>::getInstance();
+    }
+};
+
+test_suite* init_unit_test_suite(int argc, char * argv[]) 
+{
+    test_suite* test(BOOST_TEST_SUITE("ThreadSynch test suite"));
+    test->add(new ThreadSynchTestSuite);
+    return test;
+}
 
 /************************************************************************
 ** Synchronous Suite, Test 1: Parameters
@@ -81,7 +142,7 @@ void testParametersSynch()
 	BOOST_CHECK(callback1() == scheduler->syncCall(g_dwThreadId, callback1, INFINITE));
 
 	boost::scoped_ptr<int> input2(new int);
-	*input2 = 0x42;
+    *input2 = 0x42;
 	boost::function<int()> callback2 = boost::bind(crossThreadIntPtr, input2.get());
 	BOOST_CHECK(callback2() == scheduler->syncCall(g_dwThreadId, callback2, INFINITE));
 
@@ -107,15 +168,10 @@ void testReturnValuesSynch()
 ** Synchronous Suite, Test 3: Exceptions
 */
 
-void makeThrowCrossCall()
-{
-    ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>* scheduler = ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>::getInstance();
-    scheduler->syncCall<void, ExceptionTypes<TestException>>(g_dwThreadId, crossThreadException, INFINITE);
-}
-
 void testExceptionsSynch()
 {
-    BOOST_CHECK_EXCEPTION(makeThrowCrossCall(), TestException, isRealException);
+    BOOST_CHECK_EXCEPTION(makeThrowingCrossCall_BaseDerived(), TestDerivedException, isRealException);
+    BOOST_CHECK_EXCEPTION(makeThrowingCrossCall_DerivedBase(), TestDerivedException, isRealException);
 }
 
 /************************************************************************
@@ -178,9 +234,16 @@ void testReturnValuesAsynch()
 void testExceptionsAsynch()
 {
     ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>* scheduler = ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>::getInstance();
-    ThreadSynch::Future<void> f = scheduler->asyncCall<void, ExceptionTypes<TestException>>(g_dwThreadId, crossThreadException);
+    
+    // Test with base exception listed first
+    ThreadSynch::Future<void> f = scheduler->asyncCall<void, ExceptionTypes<TestException, TestDerivedException>>(g_dwThreadId, crossThreadException);
     f.wait(INFINITE);
-    BOOST_CHECK_EXCEPTION(f.abort(), TestException, isRealException);
+    BOOST_CHECK_EXCEPTION(f.abort(), TestDerivedException, isRealException);
+
+    // Test with derived exception listed first
+    ThreadSynch::Future<void> f2 = scheduler->asyncCall<void, ExceptionTypes<TestDerivedException, TestException>>(g_dwThreadId, crossThreadException);
+    f2.wait(INFINITE);
+    BOOST_CHECK_EXCEPTION(f2.abort(), TestDerivedException, isRealException);
 }
 
 /************************************************************************
@@ -195,52 +258,6 @@ void testAbortAsynch()
     ThreadSynch::Future<void> f = scheduler->asyncCall<void>(g_dwThreadId, aborted);
     f.wait(100);
     // abort by letting the Future-object fall out of scope
-}
-
-/************************************************************************
-** Test Setup
-*/
-
-struct ThreadSynchTestSuite : test_suite
-{
-    ThreadSynchTestSuite()
-    {
-        g_hCloseEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-        g_hTemporarilySuspendEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-        g_hTestThread = CreateThread(NULL, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(testThread), NULL, 0, &g_dwThreadId);
-
-        // Synchronous test cases
-        add(BOOST_TEST_CASE(&testAbortSynch));
-        add(BOOST_TEST_CASE(&testParametersSynch));
-        add(BOOST_TEST_CASE(&testReturnValuesSynch));
-        add(BOOST_TEST_CASE(&testExceptionsSynch));
-
-        // Asynchronous test cases
-        add(BOOST_TEST_CASE(&testAbortAsynch));
-        add(BOOST_TEST_CASE(&testParametersAsynch));
-        add(BOOST_TEST_CASE(&testReturnValuesAsynch));
-        add(BOOST_TEST_CASE(&testExceptionsAsynch));
-    }
-
-    ~ThreadSynchTestSuite()
-    {
-        SetEvent(g_hCloseEvent);
-        WaitForSingleObject(g_hTestThread, INFINITE);
-        CloseHandle(g_hTestThread);
-        CloseHandle(g_hCloseEvent);
-
-        // Delete the singleton, for the sake of leak detection.
-        // Some globals will however be detected either way, so don't be alarmed by the notification for the time being.
-        // The key point is: The leak doesn't grow.
-        delete ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>::getInstance();
-    }
-};
-
-test_suite* init_unit_test_suite(int argc, char * argv[]) 
-{
-    test_suite* test(BOOST_TEST_SUITE("ThreadSynch test suite"));
-    test->add(new ThreadSynchTestSuite);
-    return test;
 }
 
 /************************************************************************
@@ -267,6 +284,20 @@ DWORD WINAPI testThread(PVOID)
         }
     }
     return 0;
+}
+
+void makeThrowingCrossCall_BaseDerived()
+{
+    ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>* scheduler = ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>::getInstance();
+    // Base exception listed first
+    scheduler->syncCall<void, ExceptionTypes<TestException, TestDerivedException>>(g_dwThreadId, crossThreadException, INFINITE);
+}
+
+void makeThrowingCrossCall_DerivedBase()
+{
+    ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>* scheduler = ThreadSynch::CallScheduler<ThreadSynch::APCPickupPolicy>::getInstance();
+    // Derived exception listed first
+    scheduler->syncCall<void, ExceptionTypes<TestDerivedException, TestException>>(g_dwThreadId, crossThreadException, INFINITE);
 }
 
 int crossThreadIntValue(int input)
@@ -298,7 +329,7 @@ bool isRealException(const TestException& ex)
 
 void crossThreadException()
 {
-    throw TestException(42);
+    throw TestDerivedException(42);
 }
 
 void aborted()

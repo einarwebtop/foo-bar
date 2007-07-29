@@ -21,7 +21,7 @@
 namespace ThreadSynch
 {
 	/*!@class PicupPolicyProvider
-	** @brief Interface of all picup policies.
+	** @brief Interface of all pickup policies.
 	*/
 	class PickupPolicyProvider
 	{
@@ -30,6 +30,6 @@ namespace ThreadSynch
 		static void scheduleThreadCallback(DWORD dwThreadId, PCALLBACK pCallbackFunction, ULONG_PTR ulpFunctionParameter);
 
 	private:
-		PickupPolicyProvider() {}
+		PickupPolicyProvider();
 	};
 }

@@ -40,8 +40,26 @@ namespace ThreadSynch
 	template<typename E, int N = boost::mpl::size<E>::type::value>
 	class ExceptionExpecter;
 
-	// A shortened version to refer to the exception type at position n in the MPL vector
-	#define EXCEPTION_TYPE(n) typename boost::mpl::at<E, boost::mpl::int_<n>>::type
+    // Macro which refers to exception 'n' of a sorted MPL vector. The sort order is determined
+    // by checking if any of the types in the vector have a base/derived relation ship, and
+    // subsequently placing the most derived types in front.
+    #define EXCEPTION_TYPE(n)  /***********************************************************/\
+        typename boost::mpl::at                                                             \
+        <                                                                                   \
+            typename boost::mpl::sort                                                       \
+            <                                                                               \
+                E,                                                                          \
+                boost::mpl::not_                                                            \
+                <                                                                           \
+                    boost::is_base_and_derived                                              \
+                    <                                                                       \
+                        boost::mpl::_1,                                                     \
+                        boost::mpl::_2                                                      \
+                    >                                                                       \
+                >                                                                           \
+            >::type,                                                                        \
+            boost::mpl::int_<n>                                                             \
+        >::type /***************************************************************************/
 
 	// A generic catch block
 	// Todo: The catch block would be more efficient if we could 

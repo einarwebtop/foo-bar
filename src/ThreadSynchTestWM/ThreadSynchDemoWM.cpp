@@ -48,7 +48,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		// Since the thread that runs this message loop is also the owner
 		// of the window, calls through these pickups can safely access
 		// data owned by the window.
-		// See the ThreadSynchdemoWM.h header for a defintiion of WMPickup.
+		// See the ThreadSynchdemoWM.h header for a definition of WMPickup.
 		if(msg.message == WMPickup::WM_PICKUP)
 		{
 			WMPickup::executeCallback(msg.wParam, msg.lParam);
@@ -149,12 +149,14 @@ void updateText(const string& textToAdd)
 		// though several calls may make it here at the same time
 		// (as mentioned above), the real body of this function will
 		// be serialized.
-		g_callScheduler->syncCall<void>(g_dwGuiThread, boost::bind(updateText, boost::ref(textToAdd)), 500);
+		g_callScheduler->syncCall<void>(g_dwGuiThread, boost::bind(updateText, boost::ref(textToAdd)), 100);
 		return;
 	}
 
 	// We are free to do some synchronized operations from here on out. 
-	// All calls that reach this point are serialized.
+	// All calls that reach this point are serialized, meaning that they all
+    // come in context of the same thread, which means that there will be no
+    // race for "shared" resources.
 	/* ... */
 
 	// Update the call counter and set some new text in the text box

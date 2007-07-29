@@ -535,7 +535,14 @@ namespace ThreadSynch
 			return;
 		}
 		
+        // Delete the thread's queue
 		(*threadQueueIter).second.erase(callQueueIter);
+
+        // If the threads queue is now empty; delete it
+        if((*threadQueueIter).second.empty())
+        {
+            m_threadQueue.erase(threadQueueIter);
+        }
 	}
 
 	template<class PickupPolicy>
@@ -543,12 +550,12 @@ namespace ThreadSynch
 	{
 		// Acquire a lock on the thread queue
 		boost::mutex::scoped_lock lock(m_threadQueueMutex);
-		THREADCALLQUEUE::iterator threadQueueIterator;
+		THREADCALLQUEUE::iterator threadQueueIter;
 
-		if((threadQueueIterator = m_threadQueue.find(dwThreadId)) != m_threadQueue.end())
+		if((threadQueueIter = m_threadQueue.find(dwThreadId)) != m_threadQueue.end())
 		{
 			// Find the queue for the current requested thread
-			CALLQUEUE* pCallbackQueue = &((*threadQueueIterator).second);
+			CALLQUEUE* pCallbackQueue = &((*threadQueueIter).second);
 
             CALLQUEUE::iterator callbackQueueIterator;
             for(callbackQueueIterator = pCallbackQueue->begin(); callbackQueueIterator != pCallbackQueue->end(); ++ callbackQueueIterator)
@@ -574,7 +581,7 @@ namespace ThreadSynch
 				if(pCallbackQueue->empty())
 				{
 					// Erase the thread's queue
-					m_threadQueue.erase(threadQueueIterator);
+					m_threadQueue.erase(threadQueueIter);
 				}
 
 				return pCallHandler;

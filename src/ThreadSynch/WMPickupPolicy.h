@@ -28,6 +28,9 @@ namespace ThreadSynch
 
 		static void scheduleThreadCallback(DWORD dwThreadId, PCALLBACK pCallbackFunction, ULONG_PTR ulpFunctionParameter)
 		{
+            // Note that a PostThreadMessage approach is unreliable if the window is in a modal loop, as the 
+            // posted message will be lost. A far superior approach would be to write a custom policy targeting
+            // a specific window's message queue.
 			if(!PostThreadMessage(dwThreadId, WM_PICKUP, reinterpret_cast<WPARAM>(pCallbackFunction), static_cast<LPARAM>(ulpFunctionParameter)))
 			{
 				throw PickupSchedulingFailedException();
