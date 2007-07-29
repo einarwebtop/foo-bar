@@ -87,9 +87,11 @@ void aborted();
 ** Test Setup
 */
 
-struct ThreadSynchTestSuite : test_suite
+class ThreadSynchTestSuite : public test_suite
 {
+public:
     ThreadSynchTestSuite()
+        : test_suite("bleh")
     {
         g_hCloseEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
         g_hTemporarilySuspendEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -125,7 +127,7 @@ struct ThreadSynchTestSuite : test_suite
 test_suite* init_unit_test_suite(int argc, char * argv[]) 
 {
     test_suite* test(BOOST_TEST_SUITE("ThreadSynch test suite"));
-    test->add(new ThreadSynchTestSuite);
+    test->add(new ThreadSynchTestSuite());
     return test;
 }
 
