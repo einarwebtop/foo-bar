@@ -1,0 +1,58 @@
+\section{Thread\-Synch::Call\-Scheduler$<$ Pickup\-Policy $>$ Class Template Reference}
+\label{class_thread_synch_1_1_call_scheduler}\index{ThreadSynch::CallScheduler@{ThreadSynch::CallScheduler}}
+A singleton class which enables a user to schedule calls across threads The Pickup\-Policy template parameter will decide how notifications are transported between the threads.  
+
+
+{\tt \#include $<$Call\-Scheduler.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+template$<$typename Return\-Value\-Type, class Exceptions$>$ boost::enable\_\-if$<$ boost::is\_\-void$<$ Return\-Value\-Type $>$, Return\-Value\-Type $>$::type {\bf sync\-Call} (DWORD dw\-Thread\-Id, boost::function$<$ Return\-Value\-Type()$>$ callback, DWORD dw\-Timeout)
+\begin{CompactList}\small\item\em schedules calls to be made across threads, and expects a few exceptions might be thrown. \item\end{CompactList}\item 
+template$<$typename Return\-Value\-Type$>$ boost::enable\_\-if$<$ boost::is\_\-void$<$ Return\-Value\-Type $>$, Return\-Value\-Type $>$::type {\bf sync\-Call} (DWORD dw\-Thread\-Id, boost::function$<$ Return\-Value\-Type()$>$ callback, DWORD dw\-Timeout)
+\end{CompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{CompactItemize}
+\item 
+static {\bf Call\-Scheduler} $\ast$ {\bf get\-Instance} ()
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class Pickup\-Policy$>$ class Thread\-Synch::Call\-Scheduler$<$ Pickup\-Policy $>$}
+
+A singleton class which enables a user to schedule calls across threads The Pickup\-Policy template parameter will decide how notifications are transported between the threads. 
+
+
+
+\subsection{Member Function Documentation}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ {\bf Call\-Scheduler}$<$ Pickup\-Policy $>$ $\ast$ {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::get\-Instance ()\hspace{0.3cm}{\tt  [static]}}\label{class_thread_synch_1_1_call_scheduler_337fe8bd1fccbe30b610c5eb094a2ae4}
+
+
+\begin{Desc}
+\item[Returns:]A pointer to the \doxyref{Call\-Scheduler}{p.}{class_thread_synch_1_1_call_scheduler} implementation. \end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!syncCall@{syncCall}}
+\index{syncCall@{syncCall}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ template$<$typename Return\-Value\-Type, class Exceptions$>$ boost::enable\_\-if$<$ boost::is\_\-void$<$ Return\-Value\-Type $>$, Return\-Value\-Type $>$::type {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::sync\-Call (DWORD {\em dw\-Thread\-Id}, boost::function$<$ Return\-Value\-Type()$>$ {\em callback}, DWORD {\em dw\-Timeout})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_scheduler_b1866fa1fac12917f2e0770021335adf}
+
+
+schedules calls to be made across threads, and expects a few exceptions might be thrown. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Thread\-Id}]the id of the thread to make the call in. \item[\mbox{$\leftarrow$} {\em callback}]functor which executes the callback. \item[\mbox{$\leftarrow$} {\em dw\-Timeout}]number of milliseconds to wait before terminating. \item[\mbox{$\leftarrow$} {\em Return\-Value\-Type}]return value, usually deduced, but specify to avoid possibly cryptic errors. \item[\mbox{$\leftarrow$} {\em Exceptions}]expected exceptions, specified as a comma separated template parameters to Exception\-Types. \end{description}
+\end{Desc}
+\index{ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}!syncCall@{syncCall}}
+\index{syncCall@{syncCall}!ThreadSynch::CallScheduler@{Thread\-Synch::Call\-Scheduler}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class Pickup\-Policy$>$ template$<$typename Return\-Value\-Type$>$ boost::enable\_\-if$<$boost::is\_\-void$<$Return\-Value\-Type$>$, Return\-Value\-Type$>$:: type {\bf Thread\-Synch::Call\-Scheduler}$<$ Pickup\-Policy $>$::sync\-Call (DWORD {\em dw\-Thread\-Id}, boost::function$<$ Return\-Value\-Type()$>$ {\em callback}, DWORD {\em dw\-Timeout})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_call_scheduler_0ef2802b2dd132b8b81f2c4aa35908a6}
+
+
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Call\-Scheduler.h}\end{CompactItemize}

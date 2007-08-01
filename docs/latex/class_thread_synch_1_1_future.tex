@@ -1,0 +1,100 @@
+\section{Thread\-Synch::Future$<$ T $>$ Class Template Reference}
+\label{class_thread_synch_1_1_future}\index{ThreadSynch::Future@{ThreadSynch::Future}}
+{\tt \#include $<$Future.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Future} (typename {\bf Future\_\-Impl}$<$ T $>$::ABORTCALLBACKTYPE abort\-Callback, typename {\bf Future\_\-Impl}$<$ T $>$::WAITCALLBACKTYPE wait\-Callback, typename {\bf Future\_\-Impl}$<$ T $>$::GETRETURNVALUECALLBACKTYPE get\-Return\-Value\-Callback)
+\begin{CompactList}\small\item\em Constructs a new instance of the \doxyref{Future}{p.}{class_thread_synch_1_1_future} template, capable of holding a value of inner type T. \item\end{CompactList}\item 
+{\bf Future} (const {\bf Future} \&other)
+\item 
+{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf wait} (DWORD dw\-Timeout) const 
+\begin{CompactList}\small\item\em Waits for the future computation to take place. \item\end{CompactList}\item 
+{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf abort} () const
+\begin{CompactList}\small\item\em Attempts to abort the computation. If the computation has already started, the call will run till completion prior to returning ASYNCH\_\-CALL\_\-COMPLETE. \item\end{CompactList}\item 
+T {\bf get\-Value} () const
+\begin{CompactList}\small\item\em Waits for the future computation to take place. \item\end{CompactList}\end{CompactItemize}
+\subsubsection*{template$<$typename T$>$ class Thread\-Synch::Future$<$ T $>$}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{ThreadSynch::Future@{Thread\-Synch::Future}!Future@{Future}}
+\index{Future@{Future}!ThreadSynch::Future@{Thread\-Synch::Future}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Thread\-Synch::Future}$<$ T $>$::{\bf Future} (typename {\bf Future\_\-Impl}$<$ T $>$::ABORTCALLBACKTYPE {\em abort\-Callback}, typename {\bf Future\_\-Impl}$<$ T $>$::WAITCALLBACKTYPE {\em wait\-Callback}, typename {\bf Future\_\-Impl}$<$ T $>$::GETRETURNVALUECALLBACKTYPE {\em get\-Return\-Value\-Callback})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_c6761fb22e68eec6cf600e07a9357a3a}
+
+
+Constructs a new instance of the \doxyref{Future}{p.}{class_thread_synch_1_1_future} template, capable of holding a value of inner type T. 
+
+\begin{Desc}
+\item[Warning:]The inner type cannot be of pointer or reference type. This restriction is imposed as an attempt to prevent the return value to share resources with other threads. It is, of course, not a fool proof guard, so be vary. \end{Desc}
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em abort\-Callback}]a callback to a function which aborts the computation of the future variable. \item[\mbox{$\leftarrow$} {\em wait\-Callback}]a callback which waits a number of milliseconds for the computation to take place. \item[\mbox{$\leftarrow$} {\em get\-Return\-Value\-Callback}]a callback which returns the computed future variable. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Exceptions:]
+\begin{description}
+\item[{\em std::bad\_\-alloc}]The inner \doxyref{Future\_\-Impl}{p.}{class_thread_synch_1_1_future___impl} could not be allocated. \end{description}
+\end{Desc}
+\index{ThreadSynch::Future@{Thread\-Synch::Future}!Future@{Future}}
+\index{Future@{Future}!ThreadSynch::Future@{Thread\-Synch::Future}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Thread\-Synch::Future}$<$ T $>$::{\bf Future} (const {\bf Future}$<$ T $>$ \& {\em other})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_62677e3f22c9bae91f899b6e8bed5c0f}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{ThreadSynch::Future@{Thread\-Synch::Future}!wait@{wait}}
+\index{wait@{wait}!ThreadSynch::Future@{Thread\-Synch::Future}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf ASYNCH\_\-CALL\_\-STATUS} {\bf Thread\-Synch::Future}$<$ T $>$::wait (DWORD {\em dw\-Timeout}) const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_67b12b4bfc43265b20bea27e31be1295}
+
+
+Waits for the future computation to take place. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Timeout}]number of milliseconds to wait before terminating. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]the current status of the future computation. \end{Desc}
+\begin{Desc}
+\item[See also:]\doxyref{ASYNCH\_\-CALL\_\-STATUS}{p.}{namespace_thread_synch_150d223e3c96b6f53e91dc80129260d9} \end{Desc}
+\index{ThreadSynch::Future@{Thread\-Synch::Future}!abort@{abort}}
+\index{abort@{abort}!ThreadSynch::Future@{Thread\-Synch::Future}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf ASYNCH\_\-CALL\_\-STATUS} {\bf Thread\-Synch::Future}$<$ T $>$::abort () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_3d30a646403a7438f392373f63eb2dc6}
+
+
+Attempts to abort the computation. If the computation has already started, the call will run till completion prior to returning ASYNCH\_\-CALL\_\-COMPLETE. 
+
+\begin{Desc}
+\item[Returns:]the current status of the future computation. \end{Desc}
+\begin{Desc}
+\item[See also:]\doxyref{ASYNCH\_\-CALL\_\-STATUS}{p.}{namespace_thread_synch_150d223e3c96b6f53e91dc80129260d9} \end{Desc}
+\index{ThreadSynch::Future@{Thread\-Synch::Future}!getValue@{getValue}}
+\index{getValue@{getValue}!ThreadSynch::Future@{Thread\-Synch::Future}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T {\bf Thread\-Synch::Future}$<$ T $>$::get\-Value () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_85d7656bec9ed41c8f9d73c065957958}
+
+
+Waits for the future computation to take place. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Timeout}]number of milliseconds to wait before terminating. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]the value. \end{Desc}
+\begin{Desc}
+\item[Exceptions:]
+\begin{description}
+\item[{\em \doxyref{Future\-Value\-Pending}{p.}{class_thread_synch_1_1_future_value_pending}}]The value is still being computed, the computation has been aborted, or an internal error has occured. \end{description}
+\end{Desc}
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Future.h}\end{CompactItemize}

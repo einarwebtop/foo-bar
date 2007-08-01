@@ -1,0 +1,109 @@
+\section{Thread\-Synch::Future\_\-Impl$<$ T $>$ Class Template Reference}
+\label{class_thread_synch_1_1_future___impl}\index{ThreadSynch::Future_Impl@{ThreadSynch::Future\_\-Impl}}
+{\tt \#include $<$Future\_\-Impl.h$>$}
+
+\subsection*{Public Types}
+\begin{CompactItemize}
+\item 
+typedef boost::function$<$ {\bf ASYNCH\_\-CALL\_\-STATUS}()$>$ {\bf ABORTCALLBACKTYPE}
+\item 
+typedef boost::function$<$ {\bf ASYNCH\_\-CALL\_\-STATUS}(DWORD)$>$ {\bf WAITCALLBACKTYPE}
+\item 
+typedef boost::function$<$ T()$>$ {\bf GETRETURNVALUECALLBACKTYPE}
+\end{CompactItemize}
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Future\_\-Impl} ({\bf ABORTCALLBACKTYPE} abort\-Callback, {\bf WAITCALLBACKTYPE} wait\-Callback, {\bf GETRETURNVALUECALLBACKTYPE} get\-Return\-Value\-Callback)
+\item 
+{\bf $\sim$Future\_\-Impl} ()
+\item 
+{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf wait} (DWORD dw\-Timeout) const 
+\item 
+{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf abort} () const
+\item 
+T {\bf get\-Value} () const
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+{\bf ABORTCALLBACKTYPE} {\bf m\_\-abort\-Callback}
+\item 
+{\bf WAITCALLBACKTYPE} {\bf m\_\-wait\-Callback}
+\item 
+{\bf GETRETURNVALUECALLBACKTYPE} {\bf m\_\-get\-Return\-Value\-Callback}
+\end{CompactItemize}
+\subsubsection*{template$<$typename T$>$ class Thread\-Synch::Future\_\-Impl$<$ T $>$}
+
+
+
+\subsection{Member Typedef Documentation}
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!ABORTCALLBACKTYPE@{ABORTCALLBACKTYPE}}
+\index{ABORTCALLBACKTYPE@{ABORTCALLBACKTYPE}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef boost::function$<${\bf ASYNCH\_\-CALL\_\-STATUS}()$>$ {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::{\bf ABORTCALLBACKTYPE}}\label{class_thread_synch_1_1_future___impl_abae03c6058f98c0d90645a1eed44d2c}
+
+
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!WAITCALLBACKTYPE@{WAITCALLBACKTYPE}}
+\index{WAITCALLBACKTYPE@{WAITCALLBACKTYPE}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef boost::function$<${\bf ASYNCH\_\-CALL\_\-STATUS}(DWORD)$>$ {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::{\bf WAITCALLBACKTYPE}}\label{class_thread_synch_1_1_future___impl_dfe894288e72ab06cbc2daa0e86a3f20}
+
+
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!GETRETURNVALUECALLBACKTYPE@{GETRETURNVALUECALLBACKTYPE}}
+\index{GETRETURNVALUECALLBACKTYPE@{GETRETURNVALUECALLBACKTYPE}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ typedef boost::function$<$T()$>$ {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::{\bf GETRETURNVALUECALLBACKTYPE}}\label{class_thread_synch_1_1_future___impl_75b386ddaa4b00faf958454aec405c53}
+
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!Future_Impl@{Future\_\-Impl}}
+\index{Future_Impl@{Future\_\-Impl}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::{\bf Future\_\-Impl} ({\bf ABORTCALLBACKTYPE} {\em abort\-Callback}, {\bf WAITCALLBACKTYPE} {\em wait\-Callback}, {\bf GETRETURNVALUECALLBACKTYPE} {\em get\-Return\-Value\-Callback})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_456323634b1bed71a9a6570a83e28fb9}
+
+
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!~Future_Impl@{$\sim$Future\_\-Impl}}
+\index{~Future_Impl@{$\sim$Future\_\-Impl}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::$\sim${\bf Future\_\-Impl} ()\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_cd9b1d61ee447493d12152d4ed95b5d7}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!wait@{wait}}
+\index{wait@{wait}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf ASYNCH\_\-CALL\_\-STATUS} {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::wait (DWORD {\em dw\-Timeout}) const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_b04bb40760009b462d960998159e4b01}
+
+
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!abort@{abort}}
+\index{abort@{abort}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf ASYNCH\_\-CALL\_\-STATUS} {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::abort () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_22feaa25d79aeac0c8eeabdb7c3badbf}
+
+
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!getValue@{getValue}}
+\index{getValue@{getValue}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ T {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::get\-Value () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_9c1195970a2dc9113564ad7fa3cf6940}
+
+
+
+
+\subsection{Member Data Documentation}
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!m_abortCallback@{m\_\-abortCallback}}
+\index{m_abortCallback@{m\_\-abortCallback}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf ABORTCALLBACKTYPE} {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::{\bf m\_\-abort\-Callback}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_future___impl_c9858bb9e8b96a38746f88db6b36f8ec}
+
+
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!m_waitCallback@{m\_\-waitCallback}}
+\index{m_waitCallback@{m\_\-waitCallback}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf WAITCALLBACKTYPE} {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::{\bf m\_\-wait\-Callback}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_future___impl_31bc29c03dc42600dafff4ad984e0911}
+
+
+\index{ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}!m_getReturnValueCallback@{m\_\-getReturnValueCallback}}
+\index{m_getReturnValueCallback@{m\_\-getReturnValueCallback}!ThreadSynch::Future_Impl@{Thread\-Synch::Future\_\-Impl}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T$>$ {\bf GETRETURNVALUECALLBACKTYPE} {\bf Thread\-Synch::Future\_\-Impl}$<$ T $>$::{\bf m\_\-get\-Return\-Value\-Callback}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_future___impl_bda190d40c6b655ee9f27bae5af05c3f}
+
+
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Future\_\-Impl.h}\end{CompactItemize}

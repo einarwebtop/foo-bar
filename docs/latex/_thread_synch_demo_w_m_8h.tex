@@ -1,0 +1,97 @@
+\section{Thread\-Synch\-Test\-WM/Thread\-Synch\-Demo\-WM.h File Reference}
+\label{_thread_synch_demo_w_m_8h}\index{ThreadSynchTestWM/ThreadSynchDemoWM.h@{ThreadSynchTestWM/ThreadSynchDemoWM.h}}
+{\tt \#include \char`\"{}resource.h\char`\"{}}\par
+{\tt \#include \char`\"{}../Thread\-Synch/Thread\-Synch.h\char`\"{}}\par
+{\tt \#include \char`\"{}../Thread\-Synch/WMPickup\-Policy.h\char`\"{}}\par
+
+
+Include dependency graph for Thread\-Synch\-Demo\-WM.h:
+
+This graph shows which files directly or indirectly include this file:\subsection*{Typedefs}
+\begin{CompactItemize}
+\item 
+typedef {\bf Thread\-Synch::WMPickup\-Policy}$<$ WM\_\-USER+1 $>$ {\bf WMPickup}
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+template$<$class T$>$ std::string {\bf tostring} (const T \&source)
+\item 
+LRESULT CALLBACK {\bf dlg\-Proc} (HWND, UINT, WPARAM, LPARAM)
+\item 
+void {\bf update\-Text} (const std::string \&text\-To\-Add)
+\item 
+DWORD WINAPI {\bf demo\-Worker\-Thread} (PVOID)
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+HWND {\bf g\_\-h\-Dlg} = NULL
+\item 
+DWORD {\bf g\_\-dw\-Gui\-Thread} = 0
+\item 
+unsigned long {\bf g\_\-dw\-Worker\-Threads} = 0
+\item 
+unsigned long {\bf g\_\-dw\-Calls\-Made} = 0
+\item 
+{\bf Thread\-Synch::Call\-Scheduler}$<$ {\bf WMPickup} $>$ $\ast$ {\bf g\_\-call\-Scheduler}
+\end{CompactItemize}
+
+
+\subsection{Typedef Documentation}
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!WMPickup@{WMPickup}}
+\index{WMPickup@{WMPickup}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}typedef {\bf Thread\-Synch::WMPickup\-Policy}$<$WM\_\-USER + 1$>$ {\bf WMPickup}}\label{_thread_synch_demo_w_m_8h_9aca4ddcab065e9a2d4604b0cfc58beb}
+
+
+
+
+\subsection{Function Documentation}
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!demoWorkerThread@{demoWorkerThread}}
+\index{demoWorkerThread@{demoWorkerThread}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}DWORD WINAPI demo\-Worker\-Thread (PVOID)}\label{_thread_synch_demo_w_m_8h_cdde2e96e924a55bbb9f944121f04104}
+
+
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!dlgProc@{dlgProc}}
+\index{dlgProc@{dlgProc}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}LRESULT CALLBACK dlg\-Proc (HWND, UINT, WPARAM, LPARAM)}\label{_thread_synch_demo_w_m_8h_432f235664d3970a1b0ab0efc7b9b54c}
+
+
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!tostring@{tostring}}
+\index{tostring@{tostring}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ std::string tostring (const T \& {\em source})}\label{_thread_synch_demo_w_m_8h_e17529a1282d58aff906160ab6cd286b}
+
+
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!updateText@{updateText}}
+\index{updateText@{updateText}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void update\-Text (const std::string \& {\em text\-To\-Add})}\label{_thread_synch_demo_w_m_8h_eaa7a3e3fc7c1b445b4dfca3fc52bb6e}
+
+
+
+
+\subsection{Variable Documentation}
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!g_callScheduler@{g\_\-callScheduler}}
+\index{g_callScheduler@{g\_\-callScheduler}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Thread\-Synch::Call\-Scheduler}$<${\bf WMPickup}$>$$\ast$ {\bf g\_\-call\-Scheduler}}\label{_thread_synch_demo_w_m_8h_a007d5b1e323aae1af52ae814b0c6192}
+
+
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!g_dwCallsMade@{g\_\-dwCallsMade}}
+\index{g_dwCallsMade@{g\_\-dwCallsMade}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}unsigned long {\bf g\_\-dw\-Calls\-Made} = 0}\label{_thread_synch_demo_w_m_8h_f3abbef4f52a38f9a27fb219a73ce390}
+
+
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!g_dwGuiThread@{g\_\-dwGuiThread}}
+\index{g_dwGuiThread@{g\_\-dwGuiThread}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}DWORD {\bf g\_\-dw\-Gui\-Thread} = 0}\label{_thread_synch_demo_w_m_8h_1df29ac94d73c2e3f9fa8fa5ceb2c378}
+
+
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!g_dwWorkerThreads@{g\_\-dwWorkerThreads}}
+\index{g_dwWorkerThreads@{g\_\-dwWorkerThreads}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}unsigned long {\bf g\_\-dw\-Worker\-Threads} = 0}\label{_thread_synch_demo_w_m_8h_ff9c3ec957b956bc29155b1c5a2e601b}
+
+
+\index{ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}!g_hDlg@{g\_\-hDlg}}
+\index{g_hDlg@{g\_\-hDlg}!ThreadSynchDemoWM.h@{Thread\-Synch\-Demo\-WM.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}HWND {\bf g\_\-h\-Dlg} = NULL}\label{_thread_synch_demo_w_m_8h_c2893fadf497cf594e50210198a1f198}
+
+

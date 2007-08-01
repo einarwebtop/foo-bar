@@ -1,0 +1,54 @@
+\section{Thread\-Synch::details Namespace Reference}
+\label{namespace_thread_synch_1_1details}\index{ThreadSynch::details@{ThreadSynch::details}}
+
+
+\subsection*{Enumerations}
+\begin{CompactItemize}
+\item 
+enum {\bf Caught\-Exception\-Type} \{ {\bf Caught\-Exception\-Type\_\-None}, 
+{\bf Caught\-Exception\-Type\_\-Expected}, 
+{\bf Caught\-Exception\-Type\_\-Unknown}
+ \}
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+template$<$class T$>$ void {\bf throw\-Hooked} (const T \&orig, boost::function$<$ void()$>$ \&on\-Death\-Functor)
+\begin{CompactList}\small\item\em A function which throws an exception object with an attached on-cleanup functor. \item\end{CompactList}\end{CompactItemize}
+
+
+\subsection{Enumeration Type Documentation}
+\index{ThreadSynch::details@{Thread\-Synch::details}!CaughtExceptionType@{CaughtExceptionType}}
+\index{CaughtExceptionType@{CaughtExceptionType}!ThreadSynch::details@{Thread\-Synch::details}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Thread\-Synch::details::Caught\-Exception\-Type}}\label{namespace_thread_synch_1_1details_f73d76ac70172e118a84433ebadd17c1}
+
+
+\begin{Desc}
+\item[Enumerator: ]\par
+\begin{description}
+\index{CaughtExceptionType_None@{CaughtExceptionType\_\-None}!ThreadSynch::details@{ThreadSynch::details}}\index{ThreadSynch::details@{ThreadSynch::details}!CaughtExceptionType_None@{CaughtExceptionType\_\-None}}\item[{\em 
+Caught\-Exception\-Type\_\-None\label{namespace_thread_synch_1_1details_f73d76ac70172e118a84433ebadd17c12065bd3289c2a65fd57fcd7bb3b0ac02}
+}]\index{CaughtExceptionType_Expected@{CaughtExceptionType\_\-Expected}!ThreadSynch::details@{ThreadSynch::details}}\index{ThreadSynch::details@{ThreadSynch::details}!CaughtExceptionType_Expected@{CaughtExceptionType\_\-Expected}}\item[{\em 
+Caught\-Exception\-Type\_\-Expected\label{namespace_thread_synch_1_1details_f73d76ac70172e118a84433ebadd17c183ac141838b2438cb20f69c91ad641a2}
+}]\index{CaughtExceptionType_Unknown@{CaughtExceptionType\_\-Unknown}!ThreadSynch::details@{ThreadSynch::details}}\index{ThreadSynch::details@{ThreadSynch::details}!CaughtExceptionType_Unknown@{CaughtExceptionType\_\-Unknown}}\item[{\em 
+Caught\-Exception\-Type\_\-Unknown\label{namespace_thread_synch_1_1details_f73d76ac70172e118a84433ebadd17c10febd3f74ad160dd612676acc015d6b6}
+}]\end{description}
+\end{Desc}
+
+
+
+\subsection{Function Documentation}
+\index{ThreadSynch::details@{Thread\-Synch::details}!throwHooked@{throwHooked}}
+\index{throwHooked@{throwHooked}!ThreadSynch::details@{Thread\-Synch::details}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void Thread\-Synch::details::throw\-Hooked (const T \& {\em orig}, boost::function$<$ void()$>$ \& {\em on\-Death\-Functor})}\label{namespace_thread_synch_1_1details_0cf7da2c7098aed0521b5bd1c0f3bcb4}
+
+
+A function which throws an exception object with an attached on-cleanup functor. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em orig}]the exception object to be thrown. \item[\mbox{$\leftarrow$} {\em on\-Death\-Functor}]a functor, with return type void and no parameters, which will be executed when the exception object is destroyed. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Remarks:]The function will create a dummy class which wraps the exception object to be thrown. When the exception object is free'd, which is usually when the catch block is completed, the functor will be executed. \end{Desc}

@@ -1,0 +1,79 @@
+\section{Thread\-Synch::Future$<$ void $>$ Class Template Reference}
+\label{class_thread_synch_1_1_future_3_01void_01_4}\index{ThreadSynch::Future< void >@{ThreadSynch::Future$<$ void $>$}}
+{\tt \#include $<$Future.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Future} ({\bf Future\_\-Impl}$<$ void $>$::ABORTCALLBACKTYPE abort\-Callback, {\bf Future\_\-Impl}$<$ void $>$::WAITCALLBACKTYPE wait\-Callback)
+\begin{CompactList}\small\item\em Constructs a new instance of the \doxyref{Future}{p.}{class_thread_synch_1_1_future} template, capable of holding a value of inner type T. \item\end{CompactList}\item 
+{\bf Future} (const {\bf Future} \&other)
+\item 
+{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf wait} (DWORD dw\-Timeout) const 
+\begin{CompactList}\small\item\em Waits for the future computation to take place. \item\end{CompactList}\item 
+{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf abort} () const
+\begin{CompactList}\small\item\em Attempts to abort the computation. If the computation has already started, the call will run till completion prior to returning ASYNCH\_\-CALL\_\-COMPLETE. \item\end{CompactList}\end{CompactItemize}
+\subsubsection*{template$<$$>$ class Thread\-Synch::Future$<$ void $>$}
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{ThreadSynch::Future< void >@{Thread\-Synch::Future$<$ void $>$}!Future@{Future}}
+\index{Future@{Future}!ThreadSynch::Future< void >@{Thread\-Synch::Future$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Thread\-Synch::Future}$<$ void $>$::{\bf Future} ({\bf Future\_\-Impl}$<$ void $>$::ABORTCALLBACKTYPE {\em abort\-Callback}, {\bf Future\_\-Impl}$<$ void $>$::WAITCALLBACKTYPE {\em wait\-Callback})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_3_01void_01_4_e08b010097491b7f75900b3997fb162d}
+
+
+Constructs a new instance of the \doxyref{Future}{p.}{class_thread_synch_1_1_future} template, capable of holding a value of inner type T. 
+
+\begin{Desc}
+\item[Warning:]The inner type cannot be of pointer or reference type. This restriction is imposed as an attempt to prevent the return value to share resources with other threads. It is, of course, not a fool proof guard, so be vary. \end{Desc}
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em abort\-Callback}]a callback to a function which aborts the computation of the future variable. \item[\mbox{$\leftarrow$} {\em wait\-Callback}]a callback which waits a number of milliseconds for the computation to take place. \item[\mbox{$\leftarrow$} {\em get\-Return\-Value\-Callback}]a callback which returns the computed future variable. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Exceptions:]
+\begin{description}
+\item[{\em std::bad\_\-alloc}]The inner \doxyref{Future\_\-Impl}{p.}{class_thread_synch_1_1_future___impl} could not be allocated. \end{description}
+\end{Desc}
+\index{ThreadSynch::Future< void >@{Thread\-Synch::Future$<$ void $>$}!Future@{Future}}
+\index{Future@{Future}!ThreadSynch::Future< void >@{Thread\-Synch::Future$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Thread\-Synch::Future}$<$ void $>$::{\bf Future} (const {\bf Future}$<$ void $>$ \& {\em other})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_3_01void_01_4_4f501614457d2bc03803aa86d1f2055e}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{ThreadSynch::Future< void >@{Thread\-Synch::Future$<$ void $>$}!wait@{wait}}
+\index{wait@{wait}!ThreadSynch::Future< void >@{Thread\-Synch::Future$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf Thread\-Synch::Future}$<$ void $>$::wait (DWORD {\em dw\-Timeout}) const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_3_01void_01_4_c21d4fa9a37ba7dd76814734f881af6d}
+
+
+Waits for the future computation to take place. 
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[\mbox{$\leftarrow$} {\em dw\-Timeout}]number of milliseconds to wait before terminating. \end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]the current status of the future computation. \end{Desc}
+\begin{Desc}
+\item[See also:]\doxyref{ASYNCH\_\-CALL\_\-STATUS}{p.}{namespace_thread_synch_150d223e3c96b6f53e91dc80129260d9} \end{Desc}
+\index{ThreadSynch::Future< void >@{Thread\-Synch::Future$<$ void $>$}!abort@{abort}}
+\index{abort@{abort}!ThreadSynch::Future< void >@{Thread\-Synch::Future$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf Thread\-Synch::Future}$<$ void $>$::abort () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future_3_01void_01_4_9ae4d1585e2dd1fc37ba76cdfebb6394}
+
+
+Attempts to abort the computation. If the computation has already started, the call will run till completion prior to returning ASYNCH\_\-CALL\_\-COMPLETE. 
+
+\begin{Desc}
+\item[Returns:]the current status of the future computation. \end{Desc}
+\begin{Desc}
+\item[See also:]\doxyref{ASYNCH\_\-CALL\_\-STATUS}{p.}{namespace_thread_synch_150d223e3c96b6f53e91dc80129260d9} \end{Desc}
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Future.h}\end{CompactItemize}

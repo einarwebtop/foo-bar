@@ -1,0 +1,95 @@
+\section{Thread\-Synch::Future\_\-Impl$<$ void $>$ Class Template Reference}
+\label{class_thread_synch_1_1_future___impl_3_01void_01_4}\index{ThreadSynch::Future_Impl< void >@{ThreadSynch::Future\_\-Impl$<$ void $>$}}
+{\tt \#include $<$Future\_\-Impl.h$>$}
+
+\subsection*{Public Types}
+\begin{CompactItemize}
+\item 
+typedef boost::function$<$ {\bf ASYNCH\_\-CALL\_\-STATUS}()$>$ {\bf ABORTCALLBACKTYPE}
+\item 
+typedef boost::function$<$ {\bf ASYNCH\_\-CALL\_\-STATUS}(DWORD)$>$ {\bf WAITCALLBACKTYPE}
+\end{CompactItemize}
+\subsection*{Public Member Functions}
+\begin{CompactItemize}
+\item 
+{\bf Future\_\-Impl} ({\bf ABORTCALLBACKTYPE} abort\-Callback, {\bf WAITCALLBACKTYPE} wait\-Callback)
+\item 
+{\bf $\sim$Future\_\-Impl} ()
+\item 
+{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf wait} (DWORD dw\-Timeout) const 
+\item 
+{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf abort} () const
+\item 
+void {\bf get\-Value} () const
+\end{CompactItemize}
+\subsection*{Private Attributes}
+\begin{CompactItemize}
+\item 
+{\bf ABORTCALLBACKTYPE} {\bf m\_\-abort\-Callback}
+\item 
+{\bf WAITCALLBACKTYPE} {\bf m\_\-wait\-Callback}
+\end{CompactItemize}
+\subsubsection*{template$<$$>$ class Thread\-Synch::Future\_\-Impl$<$ void $>$}
+
+
+
+\subsection{Member Typedef Documentation}
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!ABORTCALLBACKTYPE@{ABORTCALLBACKTYPE}}
+\index{ABORTCALLBACKTYPE@{ABORTCALLBACKTYPE}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}typedef boost::function$<${\bf ASYNCH\_\-CALL\_\-STATUS}()$>$ {\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::{\bf ABORTCALLBACKTYPE}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_f6c1d4a5b3f79bf0f7ae82a2f6ae0dcf}
+
+
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!WAITCALLBACKTYPE@{WAITCALLBACKTYPE}}
+\index{WAITCALLBACKTYPE@{WAITCALLBACKTYPE}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}typedef boost::function$<${\bf ASYNCH\_\-CALL\_\-STATUS}(DWORD)$>$ {\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::{\bf WAITCALLBACKTYPE}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_4e9041cd1b76c2e05233788c2d1f0b42}
+
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!Future_Impl@{Future\_\-Impl}}
+\index{Future_Impl@{Future\_\-Impl}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::{\bf Future\_\-Impl} ({\bf ABORTCALLBACKTYPE} {\em abort\-Callback}, {\bf WAITCALLBACKTYPE} {\em wait\-Callback})\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_6a9c4e250a6d7772658707c8fa2b0bec}
+
+
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!~Future_Impl@{$\sim$Future\_\-Impl}}
+\index{~Future_Impl@{$\sim$Future\_\-Impl}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::$\sim${\bf Future\_\-Impl} ()\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_3be78a5c95b740464463f5134f51f235}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!wait@{wait}}
+\index{wait@{wait}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::wait (DWORD {\em dw\-Timeout}) const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_313ee678d70664505e727687931618cf}
+
+
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!abort@{abort}}
+\index{abort@{abort}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf ASYNCH\_\-CALL\_\-STATUS} {\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::abort () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_83a44d8e59f9cead971bfd94311eb8a5}
+
+
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!getValue@{getValue}}
+\index{getValue@{getValue}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void {\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::get\-Value () const\hspace{0.3cm}{\tt  [inline]}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_5d4fed5f6d00be839a9a39feaa75a6a0}
+
+
+
+
+\subsection{Member Data Documentation}
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!m_abortCallback@{m\_\-abortCallback}}
+\index{m_abortCallback@{m\_\-abortCallback}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf ABORTCALLBACKTYPE} {\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::{\bf m\_\-abort\-Callback}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_9c311414b820a98e38cf40956382540b}
+
+
+\index{ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}!m_waitCallback@{m\_\-waitCallback}}
+\index{m_waitCallback@{m\_\-waitCallback}!ThreadSynch::Future_Impl< void >@{Thread\-Synch::Future\_\-Impl$<$ void $>$}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf WAITCALLBACKTYPE} {\bf Thread\-Synch::Future\_\-Impl}$<$ void $>$::{\bf m\_\-wait\-Callback}\hspace{0.3cm}{\tt  [private]}}\label{class_thread_synch_1_1_future___impl_3_01void_01_4_d0c8384eb7f0d507b1391ba0084f3cbd}
+
+
+
+
+The documentation for this class was generated from the following file:\begin{CompactItemize}
+\item 
+Thread\-Synch/{\bf Future\_\-Impl.h}\end{CompactItemize}

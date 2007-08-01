@@ -1,0 +1,198 @@
+\section{Unit\-Tests/Thread\-Synch\-Tests.cpp File Reference}
+\label{_thread_synch_tests_8cpp}\index{UnitTests/ThreadSynchTests.cpp@{UnitTests/ThreadSynchTests.cpp}}
+{\tt \#include $<$boost/test/test\_\-tools.hpp$>$}\par
+{\tt \#include $<$boost/test/unit\_\-test.hpp$>$}\par
+{\tt \#include $<$boost/scoped\_\-ptr.hpp$>$}\par
+{\tt \#include \char`\"{}../Thread\-Synch/Thread\-Synch.h\char`\"{}}\par
+{\tt \#include \char`\"{}../Thread\-Synch/APCPickup\-Policy.h\char`\"{}}\par
+
+
+Include dependency graph for Thread\-Synch\-Tests.cpp:\subsection*{Namespaces}
+\begin{CompactItemize}
+\item 
+namespace {\bf boost::unit\_\-test}
+\end{CompactItemize}
+\subsection*{Classes}
+\begin{CompactItemize}
+\item 
+struct {\bf Test\-Exception}
+\item 
+struct {\bf Test\-Derived\-Exception}
+\item 
+class {\bf Shared\-Class}
+\item 
+struct {\bf Thread\-Synch\-Test\-Suite}
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf test\-Parameters\-Synch} ()
+\item 
+void {\bf test\-Abort\-Synch} ()
+\item 
+void {\bf test\-Exceptions\-Synch} ()
+\item 
+void {\bf test\-Return\-Values\-Synch} ()
+\item 
+void {\bf test\-Parameters\-Asynch} ()
+\item 
+void {\bf test\-Abort\-Asynch} ()
+\item 
+void {\bf test\-Exceptions\-Asynch} ()
+\item 
+void {\bf test\-Return\-Values\-Asynch} ()
+\item 
+DWORD WINAPI {\bf test\-Thread} (PVOID)
+\item 
+void {\bf make\-Throwing\-Cross\-Call\_\-Derived\-Base} ()
+\item 
+void {\bf make\-Throwing\-Cross\-Call\_\-Base\-Derived} ()
+\item 
+boost::shared\_\-ptr$<$ {\bf Shared\-Class} $>$ {\bf cross\-Thread\-Ptr} ()
+\item 
+int {\bf cross\-Thread\-Int\-Value} (int input)
+\item 
+int {\bf cross\-Thread\-Int\-Ptr} (int $\ast$input)
+\item 
+int {\bf cross\-Thread\-Int\-Ref} (int \&input)
+\item 
+bool {\bf is\-Real\-Exception} (const {\bf Test\-Exception} \&ex)
+\item 
+void {\bf cross\-Thread\-Exception} ()
+\item 
+void {\bf aborted} ()
+\item 
+test\_\-suite $\ast$ {\bf init\_\-unit\_\-test\_\-suite} (int argc, char $\ast$argv[$\,$])
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+HANDLE {\bf g\_\-h\-Test\-Thread}
+\item 
+HANDLE {\bf g\_\-h\-Close\-Event}
+\item 
+HANDLE {\bf g\_\-h\-Temporarily\-Suspend\-Event}
+\item 
+DWORD {\bf g\_\-dw\-Thread\-Id}
+\end{CompactItemize}
+
+
+\subsection{Function Documentation}
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!aborted@{aborted}}
+\index{aborted@{aborted}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void aborted ()}\label{_thread_synch_tests_8cpp_48a27822ffb2604786cd3a921d32bff3}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!crossThreadException@{crossThreadException}}
+\index{crossThreadException@{crossThreadException}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void cross\-Thread\-Exception ()}\label{_thread_synch_tests_8cpp_b73b2f77e953c18ea2bc13e9d19b8199}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!crossThreadIntPtr@{crossThreadIntPtr}}
+\index{crossThreadIntPtr@{crossThreadIntPtr}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int cross\-Thread\-Int\-Ptr (int $\ast$ {\em input})}\label{_thread_synch_tests_8cpp_83b0c845334343612e93b03ac27a18bf}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!crossThreadIntRef@{crossThreadIntRef}}
+\index{crossThreadIntRef@{crossThreadIntRef}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int cross\-Thread\-Int\-Ref (int \& {\em input})}\label{_thread_synch_tests_8cpp_c3202e4f0c66e70e6514c2380ceba5db}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!crossThreadIntValue@{crossThreadIntValue}}
+\index{crossThreadIntValue@{crossThreadIntValue}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int cross\-Thread\-Int\-Value (int {\em input})}\label{_thread_synch_tests_8cpp_b4aa7b29ceb3d6783a9f0e109bde382f}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!crossThreadPtr@{crossThreadPtr}}
+\index{crossThreadPtr@{crossThreadPtr}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}boost::shared\_\-ptr$<$ {\bf Shared\-Class} $>$ cross\-Thread\-Ptr ()}\label{_thread_synch_tests_8cpp_c176feac05fdcf573e666c662ca40bd2}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!init_unit_test_suite@{init\_\-unit\_\-test\_\-suite}}
+\index{init_unit_test_suite@{init\_\-unit\_\-test\_\-suite}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}test\_\-suite$\ast$ init\_\-unit\_\-test\_\-suite (int {\em argc}, char $\ast$ {\em argv}[$\,$])}\label{_thread_synch_tests_8cpp_438f96d3e275d25b1a559760feaf1ab9}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!isRealException@{isRealException}}
+\index{isRealException@{isRealException}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}bool is\-Real\-Exception (const {\bf Test\-Exception} \& {\em ex})}\label{_thread_synch_tests_8cpp_bb2e82abae1cc9c621e6d851e0df2b07}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!makeThrowingCrossCall_BaseDerived@{makeThrowingCrossCall\_\-BaseDerived}}
+\index{makeThrowingCrossCall_BaseDerived@{makeThrowingCrossCall\_\-BaseDerived}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void make\-Throwing\-Cross\-Call\_\-Base\-Derived ()}\label{_thread_synch_tests_8cpp_7e5be4f977a795093f41370f42cd2ff1}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!makeThrowingCrossCall_DerivedBase@{makeThrowingCrossCall\_\-DerivedBase}}
+\index{makeThrowingCrossCall_DerivedBase@{makeThrowingCrossCall\_\-DerivedBase}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void make\-Throwing\-Cross\-Call\_\-Derived\-Base ()}\label{_thread_synch_tests_8cpp_c2d6bc346f2f2c36ac6ba05cefca3065}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testAbortAsynch@{testAbortAsynch}}
+\index{testAbortAsynch@{testAbortAsynch}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void test\-Abort\-Asynch ()}\label{_thread_synch_tests_8cpp_c3123a5ee5dc836bebe74ff516cbaf64}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testAbortSynch@{testAbortSynch}}
+\index{testAbortSynch@{testAbortSynch}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void test\-Abort\-Synch ()}\label{_thread_synch_tests_8cpp_46a3e7179d0c819cffec32c0e0b083d7}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testExceptionsAsynch@{testExceptionsAsynch}}
+\index{testExceptionsAsynch@{testExceptionsAsynch}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void test\-Exceptions\-Asynch ()}\label{_thread_synch_tests_8cpp_756cdd4998484428203a92f492e18193}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testExceptionsSynch@{testExceptionsSynch}}
+\index{testExceptionsSynch@{testExceptionsSynch}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void test\-Exceptions\-Synch ()}\label{_thread_synch_tests_8cpp_8c1e072944bd4918a76a0cd699e2018e}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testParametersAsynch@{testParametersAsynch}}
+\index{testParametersAsynch@{testParametersAsynch}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void test\-Parameters\-Asynch ()}\label{_thread_synch_tests_8cpp_6d54cbf967863df0b607b949a9e859ae}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testParametersSynch@{testParametersSynch}}
+\index{testParametersSynch@{testParametersSynch}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void test\-Parameters\-Synch ()}\label{_thread_synch_tests_8cpp_23e889dfd47891a78f45cc50cd588a4c}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testReturnValuesAsynch@{testReturnValuesAsynch}}
+\index{testReturnValuesAsynch@{testReturnValuesAsynch}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void test\-Return\-Values\-Asynch ()}\label{_thread_synch_tests_8cpp_d542ca393368f68d0c187908d1e9ffae}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testReturnValuesSynch@{testReturnValuesSynch}}
+\index{testReturnValuesSynch@{testReturnValuesSynch}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void test\-Return\-Values\-Synch ()}\label{_thread_synch_tests_8cpp_b6b1ea332462eee91e6c2d2115c5420d}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!testThread@{testThread}}
+\index{testThread@{testThread}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}DWORD WINAPI test\-Thread (PVOID)}\label{_thread_synch_tests_8cpp_aedf943e82403da74833b6bcea601f7c}
+
+
+
+
+\subsection{Variable Documentation}
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!g_dwThreadId@{g\_\-dwThreadId}}
+\index{g_dwThreadId@{g\_\-dwThreadId}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}DWORD {\bf g\_\-dw\-Thread\-Id}}\label{_thread_synch_tests_8cpp_8219bd78cc711483b2d22288d9efe815}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!g_hCloseEvent@{g\_\-hCloseEvent}}
+\index{g_hCloseEvent@{g\_\-hCloseEvent}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}HANDLE {\bf g\_\-h\-Close\-Event}}\label{_thread_synch_tests_8cpp_369a953e247bb39cf575a507f2bbb1f0}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!g_hTemporarilySuspendEvent@{g\_\-hTemporarilySuspendEvent}}
+\index{g_hTemporarilySuspendEvent@{g\_\-hTemporarilySuspendEvent}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}HANDLE {\bf g\_\-h\-Temporarily\-Suspend\-Event}}\label{_thread_synch_tests_8cpp_b7246c285afe5d6faf9641ecd7babc08}
+
+
+\index{ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}!g_hTestThread@{g\_\-hTestThread}}
+\index{g_hTestThread@{g\_\-hTestThread}!ThreadSynchTests.cpp@{Thread\-Synch\-Tests.cpp}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}HANDLE {\bf g\_\-h\-Test\-Thread}}\label{_thread_synch_tests_8cpp_3d686622336f1dcb55826c0595b8acb2}
+
+

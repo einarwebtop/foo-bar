@@ -1,0 +1,24 @@
+digraph G
+{
+  edge [fontname="FreeSans.ttf",fontsize=10,labelfontname="FreeSans.ttf",labelfontsize=10];
+  node [fontname="FreeSans.ttf",fontsize=10,shape=record];
+  rankdir=LR;
+  Node1 [label="ThreadSynch/PickupPolicyProvider.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node2 [label="ThreadSynch/APCPickupPolicy.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_a_p_c_pickup_policy_8h.html"];
+  Node2 -> Node3 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node3 [label="ThreadSynchTest/ThreadSynchDemo.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_thread_synch_demo_8cpp.html"];
+  Node2 -> Node4 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node4 [label="UnitTests/ThreadSynchTests.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_thread_synch_tests_8cpp.html"];
+  Node1 -> Node5 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node5 [label="ThreadSynch/CallScheduler.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_call_scheduler_8h.html"];
+  Node5 -> Node6 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node6 [label="ThreadSynch/ThreadSynch.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_thread_synch_8h.html"];
+  Node6 -> Node3 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node6 -> Node7 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node7 [label="ThreadSynchTestWM/ThreadSynchDemoWM.h",height=0.2,width=0.4,color="red", fillcolor="white", style="filled",URL="$_thread_synch_demo_w_m_8h.html"];
+  Node6 -> Node4 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node1 -> Node8 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+  Node8 [label="ThreadSynch/WMPickupPolicy.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$_w_m_pickup_policy_8h.html"];
+  Node8 -> Node7 [dir=back,color="midnightblue",fontsize=10,style="solid",fontname="FreeSans.ttf"];
+}

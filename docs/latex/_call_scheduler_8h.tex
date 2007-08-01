@@ -1,0 +1,86 @@
+\section{Thread\-Synch/Call\-Scheduler.h File Reference}
+\label{_call_scheduler_8h}\index{ThreadSynch/CallScheduler.h@{ThreadSynch/CallScheduler.h}}
+{\tt \#include $<$boost/mpl/is\_\-sequence.hpp$>$}\par
+{\tt \#include $<$boost/mpl/or.hpp$>$}\par
+{\tt \#include $<$boost/mpl/and.hpp$>$}\par
+{\tt \#include \char`\"{}Call\-Handler.h\char`\"{}}\par
+{\tt \#include \char`\"{}Pickup\-Policy\-Provider.h\char`\"{}}\par
+{\tt \#include \char`\"{}Call\-Scheduler\-Exceptions.h\char`\"{}}\par
+{\tt \#include \char`\"{}Future.h\char`\"{}}\par
+
+
+Include dependency graph for Call\-Scheduler.h:
+
+This graph shows which files directly or indirectly include this file:\subsection*{Namespaces}
+\begin{CompactItemize}
+\item 
+namespace {\bf Thread\-Synch}
+\end{CompactItemize}
+\subsection*{Classes}
+\begin{CompactItemize}
+\item 
+class {\bf Thread\-Synch::Call\-Scheduler$<$ Pickup\-Policy $>$}
+\begin{CompactList}\small\item\em A singleton class which enables a user to schedule calls across threads The Pickup\-Policy template parameter will decide how notifications are transported between the threads. \item\end{CompactList}\end{CompactItemize}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define {\bf Exception\-Types}~boost::mpl::vector
+\item 
+\#define {\bf IS\_\-VOID\_\-OR\_\-SEQUENCE}(x)
+\item 
+\#define {\bf X\_\-IS\_\-VOID\_\-AND\_\-Y\_\-IS\_\-SEQUENCE}(x, y)
+\item 
+\#define {\bf X\_\-IS\_\-NON\_\-VOID\_\-AND\_\-Y\_\-IS\_\-SEQUENCE}(x, y)
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+boost::disable\_\-if$<$ IS\_\-VOID\_\-OR\_\-SEQUENCE(Return\-Value\-Type), Future$<$ Return\-Value\-Type $>$$>$::type Call\-Scheduler$<$ Pickup\-Policy $>$::async\-Call(DWORD dw\-Thread\-Id, boost::function$<$ Return\-Value\-Type()$>$ callback)\{boost::shared\_\-ptr$<$ Call\-Handler $>$ p\-Call\-Handler(new Call\-Handler());Future$<$ Return\-Value\-Type $>$ future\-Object=Future$<$ Return\-Value\-Type $>$boost::bind(\&Call\-Scheduler$<$ Pickup\-Policy $>$::abort\-Async\-Call, this, dw\-Thread\-Id, p\-Call\-Handler), boost::bind(\&Call\-Scheduler$<$ Pickup\-Policy $>$::wait\-Async\-Call, this, p\-Call\-Handler, \_\-1), boost::bind(\&Call\-Handler::get\-Return\-Value$<$ Return\-Value\-Type $>$, p\-Call\-Handler.get()));p\-Call\-Handler $\rightarrow$ set\-Call\-Functor$<$ Return\-Value\-Type, Exceptions $>$callback);pre\-Process\-Asynchronous\-Call\-Handler(dw\-Thread\-Id, p\-Call\-Handler.get());return future\-Object;\}template$<$ class Pickup\-Policy $>$ template$<$ typename Return\-Value\-Type, class Exceptions $>$ typename boost::enable\_\-if$<$ boost::is\_\-void$<$ Return\-Value\-Type $>$, Future$<$ Return\-Value\-Type $>$$>$::type Call\-Scheduler$<$ Pickup\-Policy $>$::async\-Call(DWORD dw\-Thread\-Id, boost::function$<$ Return\-Value\-Type()$>$ callback)\{boost::shared\_\-ptr$<$ Call\-Handler $>$ p\-Call\-Handler(new Call\-Handler());Future$<$ Return\-Value\-Type $>$ future\-Object=Future$<$ Return\-Value\-Type $>$boost::bind(\&Call\-Scheduler$<$ Pickup\-Policy $>$::abort\-Async\-Call, this, dw\-Thread\-Id, p\-Call\-Handler), boost::bind(\&Call\-Scheduler$<$ Pickup\-Policy $>$::wait\-Async\-Call, this, p\-Call\-Handler, \_\-1));p\-Call\-Handler $\rightarrow$ set\-Call\-Functor$<$ Return\-Value\-Type, Exceptions $>$callback);pre\-Process\-Asynchronous\-Call\-Handler(dw\-Thread\-Id, p\-Call\-Handler.get());return future\-Object;\}template$<$ class Pickup\-Policy $>$ Call\-Scheduler$<$ Pickup\-Policy $>$::Call\-Scheduler()\{\}template$<$ class Pickup\-Policy $>$ ASYNCH\_\-CALL\_\-STATUS Call\-Scheduler$<$ Pickup\-Policy $>$::abort\-Async\-Call(DWORD dw\-Thread\-Id, boost::shared\_\-ptr$<$ Call\-Handler $>$ p\-Call\-Handler)\{boost::scoped\_\-ptr$<$ boost::try\_\-mutex::scoped\_\-lock $>$ p\-Call\-Handler\-Lock;p\-Call\-Handler\-Lock.reset(new boost::try\_\-mutex::scoped\_\-lock($\ast$p\-Call\-Handler $\rightarrow$ get\-Access\-Mutex()));if(p\-Call\-Handler- {\bf Thread\-Synch::is\-Completed} )())
+\end{CompactItemize}
+
+
+\subsection{Define Documentation}
+\index{CallScheduler.h@{Call\-Scheduler.h}!ExceptionTypes@{ExceptionTypes}}
+\index{ExceptionTypes@{ExceptionTypes}!CallScheduler.h@{Call\-Scheduler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Exception\-Types~boost::mpl::vector}\label{_call_scheduler_8h_7b0728281b74431c605bc465dcb99027}
+
+
+\index{CallScheduler.h@{Call\-Scheduler.h}!IS_VOID_OR_SEQUENCE@{IS\_\-VOID\_\-OR\_\-SEQUENCE}}
+\index{IS_VOID_OR_SEQUENCE@{IS\_\-VOID\_\-OR\_\-SEQUENCE}!CallScheduler.h@{Call\-Scheduler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define IS\_\-VOID\_\-OR\_\-SEQUENCE(x)}\label{_call_scheduler_8h_13b55f25497a9a944b574be46a153f98}
+
+
+\textbf{Value:}
+
+\begin{Code}\begin{verbatim}boost::mpl::or_                 \
+        <                               \
+            boost::is_void<x>,          \
+            boost::mpl::is_sequence<x>  \
+        >
+\end{verbatim}\end{Code}
+\index{CallScheduler.h@{Call\-Scheduler.h}!X_IS_NON_VOID_AND_Y_IS_SEQUENCE@{X\_\-IS\_\-NON\_\-VOID\_\-AND\_\-Y\_\-IS\_\-SEQUENCE}}
+\index{X_IS_NON_VOID_AND_Y_IS_SEQUENCE@{X\_\-IS\_\-NON\_\-VOID\_\-AND\_\-Y\_\-IS\_\-SEQUENCE}!CallScheduler.h@{Call\-Scheduler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define X\_\-IS\_\-NON\_\-VOID\_\-AND\_\-Y\_\-IS\_\-SEQUENCE(x, y)}\label{_call_scheduler_8h_c006e8dfa2c436b0962ff6a73b5d80dc}
+
+
+\textbf{Value:}
+
+\begin{Code}\begin{verbatim}boost::mpl::and_                         \
+        <                                        \
+            boost::mpl::not_<boost::is_void<x>>, \
+            boost::mpl::is_sequence<y>           \
+        >
+\end{verbatim}\end{Code}
+\index{CallScheduler.h@{Call\-Scheduler.h}!X_IS_VOID_AND_Y_IS_SEQUENCE@{X\_\-IS\_\-VOID\_\-AND\_\-Y\_\-IS\_\-SEQUENCE}}
+\index{X_IS_VOID_AND_Y_IS_SEQUENCE@{X\_\-IS\_\-VOID\_\-AND\_\-Y\_\-IS\_\-SEQUENCE}!CallScheduler.h@{Call\-Scheduler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define X\_\-IS\_\-VOID\_\-AND\_\-Y\_\-IS\_\-SEQUENCE(x, y)}\label{_call_scheduler_8h_c7a66ee34f86eb0603031f1bc49e5542}
+
+
+\textbf{Value:}
+
+\begin{Code}\begin{verbatim}boost::mpl::and_                \
+        <                               \
+            boost::is_void<x>,          \
+            boost::mpl::is_sequence<y>  \
+        >
+\end{verbatim}\end{Code}
