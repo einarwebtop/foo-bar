@@ -4,8 +4,8 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 PROJECT_NAME           = ThreadSynch
-PROJECT_NUMBER         = 0.7.3
-OUTPUT_DIRECTORY       = D:/Prosjekter/Mine/vc/ecode/_active/ThreadSynch-experimental
+PROJECT_NUMBER         = 0.7.8
+OUTPUT_DIRECTORY       = .\
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = YES
@@ -25,7 +25,7 @@ ABBREVIATE_BRIEF       = "The $name class" \
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        = "D:/Prosjekter/Mine/vc/ecode/_active/ThreadSynch-experimental"
+STRIP_FROM_PATH        = "..\src"
 STRIP_FROM_INC_PATH    = 
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -82,7 +82,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = D:/Prosjekter/Mine/vc/ecode/_active/ThreadSynch-experimental\ThreadSynch
+INPUT                  = ..\src
 FILE_PATTERNS          = *.c \
                          *.cc \
                          *.cxx \
